@@ -265,55 +265,304 @@ body {
 <img src="tobe.png" class="diagram">
 </div>
 
+/* =========================
+   GAP ANALYSIS TABLE
+========================= */
+.gap-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 13px;
+}
+
+.gap-table th, .gap-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+.gap-table th {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.gap-table tr:hover {
+    background: #f9fafb;
+}
+
 <!-- DELIVERY VIEW -->
 <div class="section alt-section">
-<h2>Delivery View</h2>
+<h2>Delivery View (Gap Analysis → Execution Plan)</h2>
+
+<p>
+This delivery view translates identified gaps into actionable improvements, aligned with ownership, dependencies, risks, and measurable outcomes.
+It supports pilot delivery, stakeholder alignment, and governance tracking.
+</p>
 
 <table class="gap-table">
+
+<thead>
 <tr>
-<th>Area</th><th>Action</th><th>Owner</th><th>Risk</th><th>KPI</th>
+<th>Process Area</th>
+<th>AS-IS</th>
+<th>TO-BE</th>
+<th>Gap Type</th>
+<th>Improvement Action</th>
+<th>Owner</th>
+<th>Dependencies</th>
+<th>Risks</th>
+<th>Success Metric</th>
 </tr>
+</thead>
+
+<tbody>
+
 <tr>
-<td>Booking</td><td>Digital Platform</td><td>IT</td><td>Low adoption</td><td>% Digital</td>
+<td>Booking Method</td>
+<td>Manual via phone/email</td>
+<td>Digital self-service booking</td>
+<td>Process + Tech</td>
+<td>Implement online booking portal</td>
+<td>Product / IT</td>
+<td>Supplier (Yale Access), UX design</td>
+<td>Low adoption, poor UX</td>
+<td>% bookings completed digitally</td>
 </tr>
+
 <tr>
-<td>Comms</td><td>Automation</td><td>Ops</td><td>Failure</td><td>DNA %</td>
+<td>Availability Visibility</td>
+<td>No real-time availability</td>
+<td>Live scheduling system</td>
+<td>Technology</td>
+<td>Integrate clinician diaries into platform</td>
+<td>IT / Supplier</td>
+<td>System integration, data mapping</td>
+<td>Data mismatch, sync failures</td>
+<td>Real-time slot accuracy (%)</td>
 </tr>
+
+<tr>
+<td>Patient Communication</td>
+<td>Manual contact</td>
+<td>Automated reminders</td>
+<td>Automation</td>
+<td>Deploy SMS/email notification service</td>
+<td>IT / Ops</td>
+<td>Comms platform, patient data</td>
+<td>Message failures, incorrect data</td>
+<td>DNA rate reduction (%)</td>
+</tr>
+
+<tr>
+<td>Admin Effort</td>
+<td>High admin workload</td>
+<td>Exception-based handling</td>
+<td>Operating Model</td>
+<td>Redesign workflow to reduce manual steps</td>
+<td>Ops / Transformation</td>
+<td>Training, SOP updates</td>
+<td>Resistance to change</td>
+<td>Admin time per booking (mins)</td>
+</tr>
+
+<tr>
+<td>System Integration</td>
+<td>Fragmented tools</td>
+<td>Unified platform</td>
+<td>Architecture</td>
+<td>Implement integrated booking system</td>
+<td>IT / Supplier</td>
+<td>Vendor capability, APIs</td>
+<td>Integration delays</td>
+<td>System uptime & integration success rate</td>
+</tr>
+
+<tr>
+<td>Data & Reporting</td>
+<td>Limited visibility</td>
+<td>Real-time dashboards</td>
+<td>Data</td>
+<td>Build reporting layer (Power BI / dashboards)</td>
+<td>Data Team</td>
+<td>Data quality, system feeds</td>
+<td>Incomplete or inaccurate data</td>
+<td>Reporting accuracy & usage rate</td>
+</tr>
+
+</tbody>
 </table>
 </div>
 
-<!-- DASHBOARD -->
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    min-width: 250px;
+    border: 1px solid #e2e8f0;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.green { background: #d1fae5; color: #065f46; }
+.amber { background: #fef3c7; color: #92400e; }
+.red { background: #fee2e2; color: #991b1b; }
+
+.progress-bar {
+    background: #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress {
+    height: 8px;
+    background: var(--primary);
+}
+
+<!-- PILOT DASHBOARD -->
 <div class="section">
-<h2>Pilot Dashboard</h2>
+<h2>Pilot Tracking Dashboard</h2>
+
+<p>
+This dashboard tracks the progress of key transformation initiatives during the pilot phase,
+providing visibility of status, ownership, and delivery performance.
+</p>
 
 <div class="dashboard">
 
+<!-- CARD 1 -->
 <div class="dashboard-card">
-<h3>Booking</h3>
+<h3>Digital Booking Rollout</h3>
 <span class="status amber">In Progress</span>
-<div class="progress-bar"><div class="progress" style="width:60%"></div></div>
+
+<p><strong>Owner:</strong> Product / IT</p>
+
+<div class="progress-bar">
+<div class="progress" style="width: 60%;"></div>
 </div>
 
+<p>60% Complete</p>
+</div>
+
+<!-- CARD 2 -->
 <div class="dashboard-card">
-<h3>Integration</h3>
+<h3>Scheduling Integration</h3>
 <span class="status red">At Risk</span>
-<div class="progress-bar"><div class="progress" style="width:40%"></div></div>
+
+<p><strong>Owner:</strong> IT / Supplier</p>
+
+<div class="progress-bar">
+<div class="progress" style="width: 40%;"></div>
+</div>
+
+<p>40% Complete</p>
+</div>
+
+<!-- CARD 3 -->
+<div class="dashboard-card">
+<h3>Automated Communications</h3>
+<span class="status green">On Track</span>
+
+<p><strong>Owner:</strong> IT / Ops</p>
+
+<div class="progress-bar">
+<div class="progress" style="width: 75%;"></div>
+</div>
+
+<p>75% Complete</p>
+</div>
+
+<!-- CARD 4 -->
+<div class="dashboard-card">
+<h3>Reporting & Analytics</h3>
+<span class="status amber">In Progress</span>
+
+<p><strong>Owner:</strong> Data Team</p>
+
+<div class="progress-bar">
+<div class="progress" style="width: 50%;"></div>
+</div>
+
+<p>50% Complete</p>
 </div>
 
 </div>
 </div>
 
-<!-- KPI -->
+<!-- KPI TRACKING -->
 <div class="section alt-section">
-<h2>KPI Tracking</h2>
+<h2>Pilot KPI Tracking</h2>
 
 <table class="gap-table">
-<tr><th>KPI</th><th>Target</th><th>Current</th></tr>
-<tr><td>DNA</td><td>15%</td><td>18%</td></tr>
-<tr><td>Booking Time</td><td>24h</td><td>30h</td></tr>
-</table>
-</div>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Baseline</th>
+<th>Target</th>
+<th>Current</th>
+<th>Status</th>
+</tr>
+</thead>
 
+<tbody>
+
+<tr>
+<td>DNA Rate</td>
+<td>25%</td>
+<td>15%</td>
+<td>18%</td>
+<td><span class="status amber">Improving</span></td>
+</tr>
+
+<tr>
+<td>Booking Time</td>
+<td>48 hrs</td>
+<td>24 hrs</td>
+<td>30 hrs</td>
+<td><span class="status green">On Track</span></td>
+</tr>
+
+<tr>
+<td>Digital Adoption</td>
+<td>10%</td>
+<td>50%</td>
+<td>35%</td>
+<td><span class="status amber">In Progress</span></td>
+</tr>
+
+<tr>
+<td>Admin Effort</td>
+<td>15 mins</td>
+<td>5 mins</td>
+<td>8 mins</td>
+<td><span class="status green">On Track</span></td>
+</tr>
+
+</tbody>
+</table>
 </div>
 
 <div class="footer">
