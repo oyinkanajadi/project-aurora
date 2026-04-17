@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Project Aurora – a Continuous Improvement and Project Management case study on transforming the patient appointment booking journey at Aurora Health Group. Delivered 30% DNA reduction and 40% faster booking turnaround.">
+<meta name="description" content="Project Aurora – a continuous improvement and project management case study on transforming the patient appointment booking journey at Aurora Health Group. Delivered 30% DNA reduction and 40% faster booking turnaround.">
 <meta property="og:title" content="Project Aurora | Digital Insights Hub">
 <meta property="og:description" content="Transforming the Patient Appointment Booking Journey – a CI &amp; PM case study by Digital Insights Hub.">
 <meta property="og:type" content="website">
-<title>Project Aurora | Digital Insights Hub</title>
+<title>Project Aurora – Patient Booking Transformation | Digital Insights Hub</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔷</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,6 +166,7 @@ p { color: var(--ink); }
 .hero {
   background: linear-gradient(135deg, rgba(12,21,36,0.82) 0%, rgba(30,58,110,0.78) 60%, rgba(37,99,235,0.72) 100%),
               url('hero.jpg') center/cover no-repeat;
+  background-color: var(--dark); /* fallback if image missing */
   color: var(--white);
   padding-block: clamp(80px, 14vw, 140px);
   position: relative;
@@ -737,6 +738,7 @@ p { color: var(--ink); }
         <p>Aurora Health Group — a mid-sized UK private healthcare provider — faced growing patient demand alongside an increasingly strained booking operation. Manual processes, siloed data, and no automated communications were creating friction at every touchpoint.</p>
         <p>Project Aurora was commissioned to redesign the patient booking journey from the ground up: replacing manual scheduling with an integrated digital platform, automating appointment reminders, and introducing real-time capacity visibility for operational teams.</p>
         <p>The result was a measurably more efficient, patient-centred access model that reduced did-not-attends (DNAs), cut response times, and freed clinical administration staff from time-consuming manual tasks.</p>
+        <p style="font-size:0.8rem; color:var(--muted); margin-top:10px; padding: 10px 14px; background: var(--surface); border-left: 3px solid var(--line); border-radius: 4px;">Pilot conducted across two sites over a 6-week period with cross-functional stakeholder involvement spanning clinical operations, IT, and patient-facing services.</p>
       </div>
       <div class="summary-outcomes" aria-label="Key outcomes">
         <h3>Key Outcomes</h3>
@@ -847,7 +849,9 @@ p { color: var(--ink); }
         </div>
         <div class="process-card-body">
           <!-- Placeholder diagram (replace with asis.png when available) -->
-          <div class="process-placeholder" aria-label="AS-IS process flow diagram placeholder">
+          <!-- Replace with your exported BPMN diagram when ready -->
+          <img src="asis.png" alt="AS-IS booking process BPMN diagram" class="diagram" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="process-placeholder" aria-label="AS-IS process flow diagram placeholder" style="display:none">
             <div class="process-step"><div class="step-dot">1</div><span>Patient contacts clinic by phone</span></div>
             <div class="step-arrow"></div>
             <div class="process-step"><div class="step-dot">2</div><span>Admin manually checks availability</span></div>
@@ -874,7 +878,9 @@ p { color: var(--ink); }
         </div>
         <div class="process-card-body">
           <!-- Placeholder diagram (replace with tobe.png when available) -->
-          <div class="process-placeholder" aria-label="TO-BE process flow diagram placeholder">
+          <!-- Replace with your exported BPMN diagram when ready -->
+          <img src="tobe.png" alt="TO-BE digital booking process BPMN diagram" class="diagram" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="process-placeholder" aria-label="TO-BE process flow diagram placeholder" style="display:none">
             <div class="process-step"><div class="step-dot">1</div><span>Patient self-books via portal or phone IVR</span></div>
             <div class="step-arrow"></div>
             <div class="process-step"><div class="step-dot">2</div><span>Real-time slot selection from integrated calendar</span></div>
@@ -1173,8 +1179,9 @@ p { color: var(--ink); }
     <p class="lead">I'm a Continuous Improvement Analyst and Project Manager specialising in healthcare operations and digital transformation. If you'd like to discuss a project or just connect, I'd love to hear from you.</p>
     <div class="contact-links">
       <a href="mailto:hello@example.com" class="contact-btn primary">✉️ Email me</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-btn outline">🔗 LinkedIn</a>
-      <a href="https://github.com" target="_blank" rel="noopener" class="contact-btn outline">💻 GitHub</a>
+      <!-- Update these with your real LinkedIn and GitHub URLs -->
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener" class="contact-btn outline">🔗 LinkedIn</a>
+      <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="contact-btn outline">💻 GitHub</a>
     </div>
   </div>
 </section>
