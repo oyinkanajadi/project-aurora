@@ -79,10 +79,60 @@ ul {
     font-size: 14px;
     color: #888;
 }
+
+.navbar {
+    background: white;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.logo {
+    margin: 0;
+    color: #0a2540;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #1f2d3d;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    color: #0073e6;
+}    
 </style>
 </head>
 
 <body>
+
+<!-- NAVIGATION -->
+<div class="navbar">
+    <div class="container nav-container">
+        <h2 class="logo">Digital Insights Hub</h2>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Projects</a></li>
+            <li><a href="#">Toolkit</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -112,6 +162,15 @@ ul {
         <li>High DNA (Did Not Attend) rates</li>
         <li>Fragmented systems and duplicated data entry</li>
     </ul>
+</div>
+
+<div class="section">
+    <h2>Root Cause Insight</h2>
+    <p>
+        Analysis revealed that the primary issue was not demand, but the absence of a 
+        unified scheduling system. Manual triage across multiple channels created delays, 
+        increased administrative burden, and prevented real-time visibility of clinician capacity.
+    </p>
 </div>
 
 <!-- AS IS -->
@@ -154,8 +213,13 @@ ul {
 
 <!-- TO BE -->
 <div class="section">
-    <h2>TO-BE Design</h2>
-    <ul>
+   <h2>TO-BE Service Model</h2>
+<p>
+The redesigned model introduces a digital front door, automates scheduling logic, 
+and aligns patient demand directly with clinician availability.
+</p>
+
+<ul>
         <li>Digital self-service booking introduced</li>
         <li>Automated SMS/email reminders</li>
         <li>Integrated scheduling system</li>
@@ -188,7 +252,16 @@ ul {
 
 <!-- SKILLS -->
 <div class="section">
-    <h2>Skills Demonstrated</h2>
+<h2>Business Impact</h2>
+    <ul>
+        <li>Reduced operational workload through automation</li>
+        <li>Improved patient satisfaction and access speed</li>
+        <li>Enabled data-driven capacity planning</li>
+        <li>Created scalable digital booking capability</li>
+    </ul>
+</div>    
+    
+<h2>Skills Demonstrated</h2>
     <ul>
         <li>Process Modelling (BPMN)</li>
         <li>Lean Analysis & Root Cause Identification</li>
