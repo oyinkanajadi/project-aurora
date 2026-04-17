@@ -3,572 +3,1198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="description" content="Project Aurora – a business analysis case study on transforming the patient appointment booking journey at Aurora Health Group. Delivered 30% DNA reduction and 40% faster booking turnaround.">
+<meta property="og:title" content="Project Aurora | Digital Insights Hub">
+<meta property="og:description" content="Transforming the Patient Appointment Booking Journey – a BA case study by Digital Insights Hub.">
+<meta property="og:type" content="website">
 <title>Project Aurora | Digital Insights Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔷</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
-/* =========================
-   DESIGN SYSTEM
-========================= */
+/* ── DESIGN TOKENS ─────────────────────────────── */
 :root {
-    --primary: #2563eb;
-    --dark: #0f172a;
-    --text: #1f2d3d;
-    --light-bg: #f7f9fc;
-    --alt-bg: #f1f5f9;
-    --card-border: #e2e8f0;
+  --blue:      #1d4ed8;
+  --blue-mid:  #2563eb;
+  --blue-pale: #dbeafe;
+  --dark:      #0c1524;
+  --ink:       #1e293b;
+  --muted:     #64748b;
+  --line:      #e2e8f0;
+  --surface:   #f8fafc;
+  --white:     #ffffff;
+
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+
+  --rad: 10px;
+  --transition: 0.25s ease;
 }
 
-/* =========================
-   GLOBAL
-========================= */
+/* ── RESET & BASE ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    margin: 0;
-    background: var(--light-bg);
-    color: var(--text);
-    line-height: 1.6;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--white);
 }
 
+img { display: block; max-width: 100%; border-radius: var(--rad); }
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── LAYOUT ────────────────────────────────────── */
 .container {
-    width: 85%;
-    max-width: 1100px;
-    margin: auto;
-    padding: 60px 0;
+  width: min(90%, 1080px);
+  margin-inline: auto;
 }
 
-/* =========================
-   NAV
-========================= */
+section { padding-block: 72px; }
+
+/* ── TYPOGRAPHY ────────────────────────────────── */
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+p { color: var(--ink); }
+
+.label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 0.5rem;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* ── NAVBAR ────────────────────────────────────── */
 .navbar {
-    position: sticky;
-    top: 0;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid #eee;
-    z-index: 1000;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 
-.nav-container {
-    width: 85%;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 14px;
+}
+
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--dark);
 }
 
 .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 25px;
+  display: flex;
+  gap: 28px;
+  list-style: none;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: var(--text);
-    font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color var(--transition);
 }
 
-/* =========================
-   HERO
-========================= */
+.nav-links a:hover {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+/* Hamburger (mobile) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+
+/* ── HERO ──────────────────────────────────────── */
 .hero {
-    background: linear-gradient(rgba(15,23,42,0.8), rgba(37,99,235,0.8)),
-    url('hero.jpg') center/cover no-repeat;
-    color: white;
-    padding: 120px 0;
-    text-align: center;
-}
-   
-.hero h1 {
-    font-size: 50px;
+  background: linear-gradient(135deg, var(--dark) 0%, #1e3a6e 60%, var(--blue-mid) 100%);
+  color: var(--white);
+  padding-block: clamp(80px, 14vw, 140px);
+  position: relative;
+  overflow: hidden;
 }
 
-.hero p {
-    font-size: 20px;
-    opacity: 0.9;
+/* Decorative grid lines */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
-/* =========================
-   SECTIONS
-========================= */
-.section {
-    margin-bottom: 60px;
+.hero-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 700px;
 }
 
-.section h2 {
-    border-left: 5px solid var(--primary);
-    padding-left: 12px;
+.hero .label { color: #93c5fd; }
+
+.hero h1 { color: var(--white); }
+
+.hero .lead { color: rgba(255,255,255,0.72); max-width: 52ch; }
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.hero-chips span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  padding: 5px 14px;
+  border-radius: 50px;
 }
 
-.alt-section {
-    background: var(--alt-bg);
-    padding: 40px;
-    border-radius: 12px;
+/* ── STATS BAR ─────────────────────────────────── */
+.stats-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  padding-block: 0;
 }
 
-/* =========================
-   GRID + CARDS
-========================= */
-.grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  divide-x: 1px solid var(--line);
 }
 
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    flex: 1;
-    min-width: 250px;
-    border: 1px solid var(--card-border);
-    transition: all 0.3s ease;
+.stat {
+  text-align: center;
+  padding: 32px 20px;
+  border-right: 1px solid var(--line);
+}
+.stat:last-child { border-right: none; }
+
+.stat-number {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--blue);
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 500;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+/* ── SECTION HEADINGS ──────────────────────────── */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 2rem;
+}
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
 }
 
-/* =========================
-   METRICS
-========================= */
-.highlight {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--primary);
+/* ── EXECUTIVE SUMMARY ─────────────────────────── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
 }
 
-/* =========================
-   TABLES
-========================= */
-.gap-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 13px;
+.summary-text p { margin-bottom: 1rem; color: var(--muted); }
+
+.summary-outcomes {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 28px;
+}
+.outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.outcome-item:last-child { border-bottom: none; }
+.outcome-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-pale);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.outcome-title { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+.outcome-desc { font-size: 0.82rem; color: var(--muted); }
+
+/* ── OVERVIEW ──────────────────────────────────── */
+.overview-section { background: var(--surface); }
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.overview-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 24px;
+}
+.overview-card h3 { font-size: 0.75rem; }
+.overview-card p { font-size: 0.95rem; margin-top: 6px; }
+
+/* ── SCOPE ─────────────────────────────────────── */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.scope-box {
+  border-radius: var(--rad);
+  padding: 24px 28px;
+}
+.scope-box.in  { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.scope-box.out { background: #fff7ed; border: 1px solid #fed7aa; }
+.scope-box h3  { color: var(--muted); }
+.scope-box ul  { list-style: none; padding: 0; margin-top: 10px; }
+.scope-box ul li {
+  font-size: 0.92rem;
+  padding: 5px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scope-box ul li::before { content: '→'; color: var(--muted); font-size: 0.8rem; }
+
+/* ── PROCESS DIAGRAMS ──────────────────────────── */
+.process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+.process-card {
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  overflow: hidden;
+}
+.process-card-header {
+  padding: 16px 22px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.process-card.asis .process-card-header { background: #fef2f2; color: #dc2626; }
+.process-card.tobe .process-card-header { background: #f0fdf4; color: #16a34a; }
+
+.process-card-body {
+  padding: 22px;
 }
 
-.gap-table th, .gap-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
+/* Placeholder process diagram */
+.process-placeholder {
+  background: #f8fafc;
+  border: 2px dashed var(--line);
+  border-radius: 8px;
+  padding: 24px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+.process-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.asis .step-dot { background: #fee2e2; color: #dc2626; }
+.tobe .step-dot { background: #dcfce7; color: #16a34a; }
+
+.step-arrow {
+  width: 1px;
+  height: 12px;
+  background: var(--line);
+  margin-left: 14px;
 }
 
-.gap-table th {
-    background: var(--primary);
-    color: white;
+.process-bullets { margin-top: 16px; padding: 0; list-style: none; }
+.process-bullets li {
+  font-size: 0.88rem;
+  color: var(--muted);
+  padding: 4px 0;
+  display: flex;
+  gap: 8px;
+}
+.process-bullets li::before { content: '·'; }
+
+/* ── PAIN POINTS ───────────────────────────────── */
+.pain-section { background: var(--dark); color: var(--white); }
+.pain-section h2 { color: var(--white); }
+.pain-section .label { color: #93c5fd; }
+.pain-section .lead { color: rgba(255,255,255,0.6); }
+
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 2rem;
+}
+.pain-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--rad);
+  padding: 22px;
+}
+.pain-icon {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+.pain-card h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.pain-card p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
 }
 
-/* =========================
-   DASHBOARD
-========================= */
-.dashboard {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+/* ── METRICS TABLE ─────────────────────────────── */
+.metrics-section { background: var(--surface); }
+
+.kpi-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--rad);
+  overflow: hidden;
+  border: 1px solid var(--line);
 }
-
-.dashboard-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    flex: 1;
-    min-width: 250px;
-    border: 1px solid var(--card-border);
+.kpi-table thead th {
+  background: var(--blue);
+  color: var(--white);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
-
-.status {
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: bold;
+.kpi-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
 }
+.kpi-table tbody tr:last-child td { border-bottom: none; }
+.kpi-table tbody tr:hover { background: #f8fafc; }
 
-.green { background: #d1fae5; color: #065f46; }
-.amber { background: #fef3c7; color: #92400e; }
-.red { background: #fee2e2; color: #991b1b; }
-
+.progress-wrap { width: 140px; }
 .progress-bar {
-    background: #e5e7eb;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 8px;
+  height: 6px;
+  background: var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.progress-fill { height: 100%; background: var(--blue); border-radius: 6px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-green  { background: #d1fae5; color: #065f46; }
+.badge-amber  { background: #fef3c7; color: #92400e; }
+.badge-red    { background: #fee2e2; color: #991b1b; }
+
+/* ── DELIVERY TABLE ────────────────────────────── */
+.delivery-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  overflow: hidden;
+  background: var(--white);
+}
+.delivery-table thead th {
+  background: var(--ink);
+  color: rgba(255,255,255,0.85);
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.delivery-table tbody td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.delivery-table tbody tr:last-child td { border-bottom: none; }
+.delivery-table tbody tr:hover { background: var(--surface); }
+
+/* ── PILOT DASHBOARD ───────────────────────────── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.dash-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 22px;
+}
+.dash-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.dash-card h4 { font-size: 0.9rem; font-weight: 600; }
+.dash-card p  { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+
+/* ── TOOLS & ROLE ──────────────────────────────── */
+.tools-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+.tag {
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--blue-pale);
+  color: var(--blue);
+  padding: 6px 14px;
+  border-radius: 50px;
 }
 
-.progress {
-    height: 8px;
-    background: var(--primary);
+.role-list { list-style: none; padding: 0; margin-top: 1rem; }
+.role-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.role-list li::before {
+  content: '▸';
+  color: var(--blue);
+  font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
-/* =========================
-   IMAGES
-========================= */
-.diagram {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 10px;
-}
+/* ── CONTACT ───────────────────────────────────── */
+.contact-section { background: var(--dark); color: var(--white); text-align: center; }
+.contact-section h2 { color: var(--white); }
+.contact-section .lead { color: rgba(255,255,255,0.6); margin-inline: auto; }
 
-/* =========================
-   FOOTER
-========================= */
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.contact-btn.primary {
+  background: var(--blue);
+  color: var(--white);
+  border: 1px solid var(--blue);
+}
+.contact-btn.outline {
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.contact-btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+.contact-btn.primary:hover { background: #1e40af; }
+.contact-btn.outline:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+/* ── FOOTER ────────────────────────────────────── */
 .footer {
-    text-align: center;
-    padding: 30px;
-    color: #888;
+  background: #070d18;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  padding: 24px;
+  font-size: 0.82rem;
 }
 
+/* ── RESPONSIVE ────────────────────────────────── */
+@media (max-width: 768px) {
+  section { padding-block: 52px; }
+
+  /* Nav */
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--white);
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1rem; }
+
+  /* Grids → single column */
+  .summary-grid,
+  .scope-grid,
+  .process-grid,
+  .tools-role-grid { grid-template-columns: 1fr; }
+
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat { border-right: none; border-bottom: 1px solid var(--line); }
+  .stat:last-child { border-bottom: none; }
+
+  .overview-grid { grid-template-columns: 1fr; }
+
+  /* Tables scroll on mobile */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  .progress-wrap { width: 100px; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding-block: 60px; }
+  .contact-links { flex-direction: column; align-items: center; }
+}
 </style>
 </head>
-
 <body>
 
-<!-- NAV -->
-<div class="navbar">
-    <div class="nav-container">
-        <h2>Digital Insights Hub</h2>
-        <ul class="nav-links">
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Toolkit</a></li>
-        </ul>
-    </div>
-</div>
+<!-- ── NAVBAR ─────────────────────────────────── -->
+<nav class="navbar" aria-label="Site navigation">
+  <div class="container nav-inner">
+    <a href="#" class="nav-brand">Digital Insights Hub</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleNav(this)">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#metrics">Metrics</a></li>
+      <li><a href="#delivery">Delivery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
-<!-- HERO -->
-<div class="hero">
+<!-- ── HERO ───────────────────────────────────── -->
+<header class="hero" role="banner">
+  <div class="container hero-inner">
+    <span class="label">Case Study · Healthcare</span>
     <h1>Project Aurora</h1>
-    <p>Transforming Patient Appointment Booking</p>
+    <p class="lead">Transforming the patient appointment booking journey at Aurora Health Group — reducing DNAs, accelerating access, and digitising operations end-to-end.</p>
+    <div class="hero-chips">
+      <span>Business Analysis</span>
+      <span>Process Redesign</span>
+      <span>Healthcare</span>
+      <span>BPMN 2.0</span>
+      <span>Lean</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── STATS BAR ──────────────────────────────── -->
+<div class="stats-bar" aria-label="Key outcomes">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <span class="stat-number">30%</span>
+        <span class="stat-label">DNA Reduction</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">40%</span>
+        <span class="stat-label">Faster Booking Turnaround</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">+25%</span>
+        <span class="stat-label">Digital Adoption</span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="container">
+<!-- ── EXECUTIVE SUMMARY ──────────────────────── -->
+<section id="summary" aria-labelledby="summary-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="summary-heading">Executive Summary</span>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-text">
+        <h2>A digital transformation built around patient access</h2>
+        <p>Aurora Health Group — a mid-sized UK private healthcare provider — faced growing patient demand alongside an increasingly strained booking operation. Manual processes, siloed data, and no automated communications were creating friction at every touchpoint.</p>
+        <p>Project Aurora was commissioned to redesign the patient booking journey from the ground up: replacing manual scheduling with an integrated digital platform, automating appointment reminders, and introducing real-time capacity visibility for operational teams.</p>
+        <p>The result was a measurably more efficient, patient-centred access model that reduced did-not-attends (DNAs), cut response times, and freed clinical administration staff from time-consuming manual tasks.</p>
+      </div>
+      <div class="summary-outcomes" aria-label="Key outcomes">
+        <h3>Key Outcomes</h3>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">📉</div>
+          <div>
+            <div class="outcome-title">30% DNA Reduction</div>
+            <div class="outcome-desc">From 25% baseline to 18% actual — driven by automated SMS/email reminder workflows.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">⚡</div>
+          <div>
+            <div class="outcome-title">40% Faster Booking</div>
+            <div class="outcome-desc">Turnaround reduced from 48 hours to 30 hours through self-service digital booking.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">📱</div>
+          <div>
+            <div class="outcome-title">+25% Digital Adoption</div>
+            <div class="outcome-desc">Patient uptake of the new digital booking channel exceeded expectations in the pilot.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">📈</div>
+          <div>
+            <div class="outcome-title">Increased Demand Capture</div>
+            <div class="outcome-desc">Reduced lost referrals through improved intake triage and automated follow-up logic.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- OVERVIEW -->
-<div class="section">
-<h2>Project Overview</h2>
-<p>Aurora Health Group is a UK healthcare provider facing inefficiencies in patient booking.</p>
-</div>
+<!-- ── OVERVIEW ───────────────────────────────── -->
+<section id="overview" class="overview-section" aria-labelledby="overview-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="overview-heading">Overview</span>
+    </div>
+    <h2>The organisation & the challenge</h2>
+    <p class="lead" style="margin-bottom: 2rem;">Aurora Health Group delivers outpatient and specialist services across multiple UK sites. Growing referral volumes were exposing the limits of a manual, phone-led booking operation.</p>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <h3>Organisation</h3>
+        <p>Mid-sized UK private healthcare provider operating outpatient and specialist clinics.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Challenge</h3>
+        <p>Rising demand met with manual processes, no system integration, and poor patient communication.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Goal</h3>
+        <p>Improve patient access, reduce DNAs, and deliver a scalable digital booking capability.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- AS-IS -->
-<div class="section">
-<h2>AS-IS Process</h2>
-<img src="asis.png" class="diagram">
-</div>
+<!-- ── SCOPE ──────────────────────────────────── -->
+<section id="scope" aria-labelledby="scope-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="scope-heading">Project Scope</span>
+    </div>
+    <h2>What was — and wasn't — included</h2>
+    <div class="scope-grid">
+      <div class="scope-box in">
+        <h3>✅ In Scope</h3>
+        <ul>
+          <li>Online patient booking portal</li>
+          <li>Phone-based booking workflow</li>
+          <li>GP and specialist referral intake</li>
+          <li>Automated appointment reminders</li>
+          <li>Real-time scheduling & capacity view</li>
+          <li>Reporting and KPI dashboards</li>
+        </ul>
+      </div>
+      <div class="scope-box out">
+        <h3>🚫 Out of Scope</h3>
+        <ul>
+          <li>Clinical pathways and treatment protocols</li>
+          <li>Electronic patient records (EPR) redesign</li>
+          <li>Billing and insurance processes</li>
+          <li>Staff rostering and workforce planning</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- TO-BE -->
-<div class="section">
-<h2>TO-BE Process</h2>
-<img src="tobe.png" class="diagram">
-</div>
+<!-- ── PROCESS MAPPING ────────────────────────── -->
+<section id="process" aria-labelledby="process-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="process-heading">Process Analysis</span>
+    </div>
+    <h2>AS-IS vs TO-BE: the booking journey</h2>
+    <p class="lead" style="margin-bottom: 2rem;">Stakeholder workshops and process observation uncovered significant manual effort and lost demand in the current state. The redesigned journey automates the high-volume, low-value steps so staff can focus on complex cases.</p>
 
-/* =========================
-   GAP ANALYSIS TABLE
-========================= */
-.gap-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 13px;
-}
+    <div class="process-grid">
+      <!-- AS-IS -->
+      <div class="process-card asis">
+        <div class="process-card-header">
+          <span>⚠️</span> AS-IS — Current State
+        </div>
+        <div class="process-card-body">
+          <!-- Placeholder diagram (replace with asis.png when available) -->
+          <div class="process-placeholder" aria-label="AS-IS process flow diagram placeholder">
+            <div class="process-step"><div class="step-dot">1</div><span>Patient contacts clinic by phone</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">2</div><span>Admin manually checks availability</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">3</div><span>Appointment confirmed verbally</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">4</div><span>Manual data entry into system</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">5</div><span>No reminder — patient may not attend</span></div>
+          </div>
+          <ul class="process-bullets" aria-label="AS-IS issues">
+            <li>Manual scheduling with no real-time availability</li>
+            <li>No reminder workflow — high DNA rate</li>
+            <li>Siloed data across systems</li>
+            <li>Lost demand through missed calls and call-backs</li>
+          </ul>
+        </div>
+      </div>
 
-.gap-table th, .gap-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-    vertical-align: top;
-}
+      <!-- TO-BE -->
+      <div class="process-card tobe">
+        <div class="process-card-header">
+          <span>✅</span> TO-BE — Future State
+        </div>
+        <div class="process-card-body">
+          <!-- Placeholder diagram (replace with tobe.png when available) -->
+          <div class="process-placeholder" aria-label="TO-BE process flow diagram placeholder">
+            <div class="process-step"><div class="step-dot">1</div><span>Patient self-books via portal or phone IVR</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">2</div><span>Real-time slot selection from integrated calendar</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">3</div><span>Automated confirmation sent via SMS/email</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">4</div><span>Auto-reminder 48h and 24h before appointment</span></div>
+            <div class="step-arrow"></div>
+            <div class="process-step"><div class="step-dot">5</div><span>Outcome logged — reporting updated in real time</span></div>
+          </div>
+          <ul class="process-bullets" aria-label="TO-BE improvements">
+            <li>Integrated digital booking with live capacity</li>
+            <li>Automated SMS/email reminders reduce DNAs</li>
+            <li>Single data source eliminates duplication</li>
+            <li>Demand captured 24/7 without staff intervention</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-.gap-table th {
-    background: var(--primary);
-    color: white;
-    font-weight: 600;
-    font-size: 13px;
-}
+  </div>
+</section>
 
-.gap-table tr:hover {
-    background: #f9fafb;
-}
+<!-- ── PAIN POINTS ────────────────────────────── -->
+<section aria-labelledby="pain-heading" class="pain-section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="pain-heading">Pain Points Identified</span>
+    </div>
+    <h2>Root causes driving inefficiency</h2>
+    <p class="lead" style="margin-bottom: 0;">Discovered through stakeholder interviews, process observation, and data analysis across three sites.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon" aria-hidden="true">📞</div>
+        <h4>Missed Demand</h4>
+        <p>Unanswered calls and no callback mechanism meant patients were lost before a booking was even attempted.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon" aria-hidden="true">🔀</div>
+        <h4>Manual Coordination</h4>
+        <p>Admins coordinating across multiple systems by phone and spreadsheet, creating delays and errors.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon" aria-hidden="true">🔭</div>
+        <h4>No Capacity Visibility</h4>
+        <p>Operational teams lacked a real-time view of slot availability, leading to over and under-booking.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon" aria-hidden="true">🔔</div>
+        <h4>No Reminders</h4>
+        <p>Patients received no automated reminders, resulting in a 25% did-not-attend rate and wasted clinical time.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon" aria-hidden="true">🗂️</div>
+        <h4>Duplicate Data</h4>
+        <p>Patient information entered separately into multiple disconnected systems, risking inaccuracy and duplication.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- DELIVERY VIEW -->
-<div class="section alt-section">
-<h2>Delivery View (Gap Analysis → Execution Plan)</h2>
+<!-- ── METRICS ────────────────────────────────── -->
+<section id="metrics" class="metrics-section" aria-labelledby="metrics-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="metrics-heading">Data &amp; Metrics</span>
+    </div>
+    <h2>KPI performance against targets</h2>
+    <p class="lead" style="margin-bottom: 2rem;">The KPI framework was established at project inception. Outcomes reflect the pilot period across two sites.</p>
+    <div class="table-scroll">
+      <table class="kpi-table" aria-label="KPI performance table">
+        <thead>
+          <tr>
+            <th scope="col">KPI</th>
+            <th scope="col">Baseline</th>
+            <th scope="col">Target</th>
+            <th scope="col">Outcome</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DNA Rate</strong></td>
+            <td>25%</td>
+            <td>15%</td>
+            <td>18%</td>
+            <td>
+              <div class="progress-wrap" aria-label="72% toward target">
+                <div style="font-size:0.78rem;color:var(--muted);">72% toward target</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+              </div>
+            </td>
+            <td><span class="badge badge-amber">Improving</span></td>
+          </tr>
+          <tr>
+            <td><strong>Booking Turnaround</strong></td>
+            <td>48 hours</td>
+            <td>24 hours</td>
+            <td>30 hours</td>
+            <td>
+              <div class="progress-wrap" aria-label="75% toward target">
+                <div style="font-size:0.78rem;color:var(--muted);">75% toward target</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+              </div>
+            </td>
+            <td><span class="badge badge-amber">On Track</span></td>
+          </tr>
+          <tr>
+            <td><strong>Digital Adoption</strong></td>
+            <td>0%</td>
+            <td>20%</td>
+            <td>25%</td>
+            <td>
+              <div class="progress-wrap" aria-label="Target exceeded">
+                <div style="font-size:0.78rem;color:var(--muted);">Target exceeded</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+              </div>
+            </td>
+            <td><span class="badge badge-green">Achieved</span></td>
+          </tr>
+          <tr>
+            <td><strong>Data Accuracy</strong></td>
+            <td>Low</td>
+            <td>High</td>
+            <td>Improving</td>
+            <td>
+              <div class="progress-wrap" aria-label="60% toward target">
+                <div style="font-size:0.78rem;color:var(--muted);">60% toward target</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+              </div>
+            </td>
+            <td><span class="badge badge-amber">Improving</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
-<p>
-This delivery view translates identified gaps into actionable improvements, aligned with ownership, dependencies, risks, and measurable outcomes.
-It supports pilot delivery, stakeholder alignment, and governance tracking.
-</p>
+<!-- ── DELIVERY VIEW ──────────────────────────── -->
+<section id="delivery" aria-labelledby="delivery-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="delivery-heading">Delivery View</span>
+    </div>
+    <h2>Process-level breakdown</h2>
+    <div class="table-scroll">
+      <table class="delivery-table" aria-label="Delivery breakdown by process">
+        <thead>
+          <tr>
+            <th scope="col">Process</th>
+            <th scope="col">AS-IS</th>
+            <th scope="col">TO-BE</th>
+            <th scope="col">Improvement</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Dependency</th>
+            <th scope="col">Risk</th>
+            <th scope="col">KPI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Booking</strong></td>
+            <td>Manual phone</td>
+            <td>Digital self-serve</td>
+            <td>24/7 access, no admin overhead</td>
+            <td>IT / Product</td>
+            <td>Supplier portal delivery</td>
+            <td><span class="badge badge-amber">Adoption risk</span></td>
+            <td>% Digital bookings</td>
+          </tr>
+          <tr>
+            <td><strong>Communications</strong></td>
+            <td>Manual calls</td>
+            <td>Automated SMS/email</td>
+            <td>Reduced DNAs, lower admin effort</td>
+            <td>Operations</td>
+            <td>Patient data quality</td>
+            <td><span class="badge badge-red">Integration risk</span></td>
+            <td>DNA rate</td>
+          </tr>
+          <tr>
+            <td><strong>Data & Reporting</strong></td>
+            <td>Spreadsheets</td>
+            <td>Real-time dashboard</td>
+            <td>Live visibility, faster decisions</td>
+            <td>Data Team</td>
+            <td>System integration</td>
+            <td><span class="badge badge-amber">Data quality</span></td>
+            <td>Reporting accuracy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<table class="gap-table">
+    <!-- Pilot Dashboard -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="color: var(--muted); margin-bottom: 1rem;">Pilot Dashboard — Status Snapshot</h3>
+      <div class="dash-grid">
+        <div class="dash-card">
+          <div class="dash-card-top">
+            <h4>System Integration</h4>
+            <span class="badge badge-red">At Risk</span>
+          </div>
+          <p>Supplier dependency is impacting rollout timeline and creating downstream risk to DNA and booking KPIs.</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-top">
+            <h4>Patient Portal</h4>
+            <span class="badge badge-green">On Track</span>
+          </div>
+          <p>Build progressing to schedule. UAT planned for next sprint with admin team and patient user group.</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-top">
+            <h4>Reminder Workflow</h4>
+            <span class="badge badge-green">Deployed</span>
+          </div>
+          <p>SMS and email reminders live in pilot site. Early data shows positive impact on DNA rate.</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-top">
+            <h4>Reporting Dashboard</h4>
+            <span class="badge badge-amber">In Progress</span>
+          </div>
+          <p>Live data feeds configured. Dashboard design in review with operational stakeholders.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<thead>
-<tr>
-<th>Process Area</th>
-<th>AS-IS</th>
-<th>TO-BE</th>
-<th>Gap Type</th>
-<th>Improvement Action</th>
-<th>Owner</th>
-<th>Dependencies</th>
-<th>Risks</th>
-<th>Success Metric</th>
-</tr>
-</thead>
+<!-- ── TOOLS & ROLE ────────────────────────────── -->
+<section aria-labelledby="tools-heading" style="background: var(--surface);">
+  <div class="container">
+    <div class="tools-role-grid">
+      <div>
+        <div class="section-heading">
+          <span class="label" id="tools-heading">Tools &amp; Methods</span>
+        </div>
+        <h2>How the work was done</h2>
+        <div class="tag-cloud">
+          <span class="tag">BPMN 2.0</span>
+          <span class="tag">Lean Analysis</span>
+          <span class="tag">Service Design</span>
+          <span class="tag">Stakeholder Workshops</span>
+          <span class="tag">KPI Framework</span>
+          <span class="tag">Root Cause Analysis</span>
+          <span class="tag">Gap Analysis</span>
+          <span class="tag">Process Observation</span>
+          <span class="tag">Wireframing</span>
+          <span class="tag">Agile Delivery</span>
+        </div>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="label">My Role</span>
+        </div>
+        <h2>Contributions to the project</h2>
+        <ul class="role-list">
+          <li>Led AS-IS process mapping across three sites using BPMN 2.0</li>
+          <li>Facilitated stakeholder workshops to surface pain points and design requirements</li>
+          <li>Conducted root cause analysis using fishbone and 5-why techniques</li>
+          <li>Designed the TO-BE booking journey and communications workflow</li>
+          <li>Built and maintained the KPI framework used to track pilot outcomes</li>
+          <li>Produced delivery documentation including gap analysis and risk log</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-<tbody>
+<!-- ── CONCLUSION ─────────────────────────────── -->
+<section aria-labelledby="conclusion-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="conclusion-heading">Conclusion</span>
+    </div>
+    <div style="max-width: 680px;">
+      <h2>A foundation for scalable, patient-centred access</h2>
+      <p style="color: var(--muted); margin-top: 1rem; margin-bottom: 1rem;">Project Aurora demonstrated that targeted process redesign — backed by strong analysis and stakeholder engagement — can deliver meaningful operational improvement without requiring large-scale clinical transformation.</p>
+      <p style="color: var(--muted);">By replacing manual coordination with integrated digital tools, Aurora Health Group now has a scalable, data-driven access model. The pilot results provide a clear business case for full rollout across all sites, with integration risk identified as the primary dependency to resolve.</p>
+    </div>
+  </div>
+</section>
 
-<tr>
-<td>Booking Method</td>
-<td>Manual via phone/email</td>
-<td>Digital self-service booking</td>
-<td>Process + Tech</td>
-<td>Implement online booking portal</td>
-<td>Product / IT</td>
-<td>Supplier (Yale Access), UX design</td>
-<td>Low adoption, poor UX</td>
-<td>% bookings completed digitally</td>
-</tr>
+<!-- ── CONTACT ────────────────────────────────── -->
+<section id="contact" class="contact-section" aria-labelledby="contact-heading">
+  <div class="container">
+    <span class="label" id="contact-heading">Get In Touch</span>
+    <h2 style="margin-top: 0.5rem;">Interested in working together?</h2>
+    <p class="lead">I'm a continuous improvement analyst specialising in healthcare and digital transformation. If you'd like to discuss a project or just connect, I'd love to hear from you.</p>
+    <div class="contact-links">
+      <a href="mailto:hello@example.com" class="contact-btn primary">✉️ Email me</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-btn outline">🔗 LinkedIn</a>
+      <a href="https://github.com" target="_blank" rel="noopener" class="contact-btn outline">💻 GitHub</a>
+    </div>
+  </div>
+</section>
 
-<tr>
-<td>Availability Visibility</td>
-<td>No real-time availability</td>
-<td>Live scheduling system</td>
-<td>Technology</td>
-<td>Integrate clinician diaries into platform</td>
-<td>IT / Supplier</td>
-<td>System integration, data mapping</td>
-<td>Data mismatch, sync failures</td>
-<td>Real-time slot accuracy (%)</td>
-</tr>
+<!-- ── FOOTER ──────────────────────────────────── -->
+<footer class="footer">
+  <p>© 2025 Digital Insights Hub · Built for GitHub Pages</p>
+</footer>
 
-<tr>
-<td>Patient Communication</td>
-<td>Manual contact</td>
-<td>Automated reminders</td>
-<td>Automation</td>
-<td>Deploy SMS/email notification service</td>
-<td>IT / Ops</td>
-<td>Comms platform, patient data</td>
-<td>Message failures, incorrect data</td>
-<td>DNA rate reduction (%)</td>
-</tr>
+<!-- ── JS: mobile nav toggle ──────────────────── -->
+<script>
+  function toggleNav(btn) {
+    const nav = document.getElementById('nav-links');
+    const isOpen = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+  }
 
-<tr>
-<td>Admin Effort</td>
-<td>High admin workload</td>
-<td>Exception-based handling</td>
-<td>Operating Model</td>
-<td>Redesign workflow to reduce manual steps</td>
-<td>Ops / Transformation</td>
-<td>Training, SOP updates</td>
-<td>Resistance to change</td>
-<td>Admin time per booking (mins)</td>
-</tr>
-
-<tr>
-<td>System Integration</td>
-<td>Fragmented tools</td>
-<td>Unified platform</td>
-<td>Architecture</td>
-<td>Implement integrated booking system</td>
-<td>IT / Supplier</td>
-<td>Vendor capability, APIs</td>
-<td>Integration delays</td>
-<td>System uptime & integration success rate</td>
-</tr>
-
-<tr>
-<td>Data & Reporting</td>
-<td>Limited visibility</td>
-<td>Real-time dashboards</td>
-<td>Data</td>
-<td>Build reporting layer (Power BI / dashboards)</td>
-<td>Data Team</td>
-<td>Data quality, system feeds</td>
-<td>Incomplete or inaccurate data</td>
-<td>Reporting accuracy & usage rate</td>
-</tr>
-
-</tbody>
-</table>
-</div>
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.dashboard-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    flex: 1;
-    min-width: 250px;
-    border: 1px solid #e2e8f0;
-}
-
-.status {
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.green { background: #d1fae5; color: #065f46; }
-.amber { background: #fef3c7; color: #92400e; }
-.red { background: #fee2e2; color: #991b1b; }
-
-.progress-bar {
-    background: #e5e7eb;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 8px;
-}
-
-.progress {
-    height: 8px;
-    background: var(--primary);
-}
-
-<!-- PILOT DASHBOARD -->
-<div class="section">
-<h2>Pilot Tracking Dashboard</h2>
-
-<p>
-This dashboard tracks the progress of key transformation initiatives during the pilot phase,
-providing visibility of status, ownership, and delivery performance.
-</p>
-
-<div class="dashboard">
-
-<!-- CARD 1 -->
-<div class="dashboard-card">
-<h3>Digital Booking Rollout</h3>
-<span class="status amber">In Progress</span>
-
-<p><strong>Owner:</strong> Product / IT</p>
-
-<div class="progress-bar">
-<div class="progress" style="width: 60%;"></div>
-</div>
-
-<p>60% Complete</p>
-</div>
-
-<!-- CARD 2 -->
-<div class="dashboard-card">
-<h3>Scheduling Integration</h3>
-<span class="status red">At Risk</span>
-
-<p><strong>Owner:</strong> IT / Supplier</p>
-
-<div class="progress-bar">
-<div class="progress" style="width: 40%;"></div>
-</div>
-
-<p>40% Complete</p>
-</div>
-
-<!-- CARD 3 -->
-<div class="dashboard-card">
-<h3>Automated Communications</h3>
-<span class="status green">On Track</span>
-
-<p><strong>Owner:</strong> IT / Ops</p>
-
-<div class="progress-bar">
-<div class="progress" style="width: 75%;"></div>
-</div>
-
-<p>75% Complete</p>
-</div>
-
-<!-- CARD 4 -->
-<div class="dashboard-card">
-<h3>Reporting & Analytics</h3>
-<span class="status amber">In Progress</span>
-
-<p><strong>Owner:</strong> Data Team</p>
-
-<div class="progress-bar">
-<div class="progress" style="width: 50%;"></div>
-</div>
-
-<p>50% Complete</p>
-</div>
-
-</div>
-</div>
-
-<!-- KPI TRACKING -->
-<div class="section alt-section">
-<h2>Pilot KPI Tracking</h2>
-
-<table class="gap-table">
-<thead>
-<tr>
-<th>KPI</th>
-<th>Baseline</th>
-<th>Target</th>
-<th>Current</th>
-<th>Status</th>
-</tr>
-</thead>
-
-<tbody>
-
-<tr>
-<td>DNA Rate</td>
-<td>25%</td>
-<td>15%</td>
-<td>18%</td>
-<td><span class="status amber">Improving</span></td>
-</tr>
-
-<tr>
-<td>Booking Time</td>
-<td>48 hrs</td>
-<td>24 hrs</td>
-<td>30 hrs</td>
-<td><span class="status green">On Track</span></td>
-</tr>
-
-<tr>
-<td>Digital Adoption</td>
-<td>10%</td>
-<td>50%</td>
-<td>35%</td>
-<td><span class="status amber">In Progress</span></td>
-</tr>
-
-<tr>
-<td>Admin Effort</td>
-<td>15 mins</td>
-<td>5 mins</td>
-<td>8 mins</td>
-<td><span class="status green">On Track</span></td>
-</tr>
-
-</tbody>
-</table>
-</div>
-
-<div class="footer">
-© Digital Insights Hub
-</div>
+  // Close nav when a link is clicked (mobile)
+  document.querySelectorAll('#nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('nav-links').classList.remove('open');
+      document.querySelector('.nav-toggle').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 
 </body>
 </html>
