@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Project Nexus – Enterprise procurement system implementation and stabilisation case study. Resolved critical integration failures, stabilised approval workflows, and enabled phased adoption across a large multi-site organisation.">
+<meta property="og:title" content="Project Nexus – PO System Transformation | Digital Insights Hub">
+<meta property="og:description" content="Enterprise Procurement System Implementation & Stabilisation – a CI & PM case study by Digital Insights Hub.">
+<meta property="og:type" content="website">
+<title>Project Nexus – Procurement System Transformation | Digital Insights Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔶</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────── */
+:root {
+  /* Nexus accent: deep amber/slate — distinct from Aurora's blue */
+  --accent:      #b45309;
+  --accent-mid:  #d97706;
+  --accent-pale: #fef3c7;
+  --dark:        #0f172a;
+  --ink:         #1e293b;
+  --muted:       #64748b;
+  --line:        #e2e8f0;
+  --surface:     #f8fafc;
+  --white:       #ffffff;
+
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+
+  --rad: 10px;
+  --transition: 0.25s ease;
+}
+
+/* ── RESET & BASE ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--white);
+}
+
+img { display: block; max-width: 100%; border-radius: var(--rad); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── LAYOUT ────────────────────────────────────── */
+.container {
+  width: min(90%, 1080px);
+  margin-inline: auto;
+}
+section { padding-block: 72px; }
+
+/* ── TYPOGRAPHY ────────────────────────────────── */
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+p { color: var(--ink); }
+
+.label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.lead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* ── NAVBAR ────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 14px;
+}
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--dark);
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--accent); text-decoration: none; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+
+/* ── HERO ──────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, rgba(15,23,42,0.88) 0%, rgba(30,20,10,0.85) 55%, rgba(180,83,9,0.75) 100%),
+              url('nexus-hero.jpg') center/cover no-repeat;
+  background-color: var(--dark);
+  color: var(--white);
+  padding-block: clamp(80px, 14vw, 140px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Diagonal stripe texture */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.02) 40px,
+    rgba(255,255,255,0.02) 41px
+  );
+}
+
+.hero-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 700px;
+}
+.hero .label { color: #fcd34d; }
+.hero h1 { color: var(--white); }
+.hero .lead { color: rgba(255,255,255,0.72); max-width: 52ch; }
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.hero-chips span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  padding: 5px 14px;
+  border-radius: 50px;
+}
+
+/* ── STATS BAR ─────────────────────────────────── */
+.stats-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.stat {
+  text-align: center;
+  padding: 32px 20px;
+  border-right: 1px solid var(--line);
+}
+.stat:last-child { border-right: none; }
+.stat-number {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── SECTION HEADINGS ──────────────────────────── */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 2rem;
+}
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── EXEC SUMMARY ──────────────────────────────── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.summary-text p { margin-bottom: 1rem; color: var(--muted); }
+.summary-text .credibility-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-left: 3px solid var(--line);
+  border-radius: 4px;
+}
+
+.summary-outcomes {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 28px;
+}
+.outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.outcome-item:last-child { border-bottom: none; }
+.outcome-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--accent-pale);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.outcome-title { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+.outcome-desc  { font-size: 0.82rem; color: var(--muted); }
+
+/* ── CONTEXT ───────────────────────────────────── */
+.context-section { background: var(--surface); }
+
+.context-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.context-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 24px;
+}
+.context-card h3 { font-size: 0.75rem; }
+.context-card p  { font-size: 0.95rem; margin-top: 6px; }
+
+/* ── CHALLENGES ────────────────────────────────── */
+.challenge-section { background: var(--dark); color: var(--white); }
+.challenge-section h2 { color: var(--white); }
+.challenge-section .label { color: #fcd34d; }
+.challenge-section .lead { color: rgba(255,255,255,0.6); }
+
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 2rem;
+}
+.challenge-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--rad);
+  padding: 22px;
+}
+.challenge-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.challenge-card h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.challenge-card p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+/* ── COMPLEXITY TABLE ──────────────────────────── */
+.complexity-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--rad);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.complexity-table thead th {
+  background: var(--ink);
+  color: rgba(255,255,255,0.85);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.complexity-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.complexity-table tbody tr:last-child td { border-bottom: none; }
+.complexity-table tbody tr:hover { background: var(--surface); }
+
+.impact-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.impact-high   { background: #fee2e2; color: #991b1b; }
+.impact-medium { background: #fef3c7; color: #92400e; }
+.impact-low    { background: #d1fae5; color: #065f46; }
+
+/* ── INTERVENTIONS ─────────────────────────────── */
+.intervention-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.intervention-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+}
+.intervention-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-mid);
+}
+.intervention-number {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--accent-pale);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.intervention-card h4 {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.intervention-card p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.intervention-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.intervention-detail strong { color: var(--ink); }
+
+/* ── OUTCOMES TABLE ────────────────────────────── */
+.outcomes-section { background: var(--surface); }
+
+.outcomes-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--rad);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.outcomes-table thead th {
+  background: var(--accent);
+  color: var(--white);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.outcomes-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.outcomes-table tbody tr:last-child td { border-bottom: none; }
+.outcomes-table tbody tr:hover { background: #fffbf5; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-green  { background: #d1fae5; color: #065f46; }
+.badge-amber  { background: #fef3c7; color: #92400e; }
+.badge-red    { background: #fee2e2; color: #991b1b; }
+
+/* ── TOOLS & ROLE ──────────────────────────────── */
+.tools-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+.tag {
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--accent-pale);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 50px;
+}
+
+.role-list { list-style: none; padding: 0; margin-top: 1rem; }
+.role-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.role-list li::before {
+  content: '▸';
+  color: var(--accent);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* ── KEY INSIGHT ───────────────────────────────── */
+.insight-section {
+  background: linear-gradient(135deg, var(--dark) 0%, #1c1008 100%);
+  color: var(--white);
+  text-align: center;
+}
+.insight-section h2 { color: var(--white); }
+.insight-quote {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-style: italic;
+  color: rgba(255,255,255,0.85);
+  max-width: 700px;
+  margin-inline: auto;
+  margin-top: 1.5rem;
+  line-height: 1.5;
+  padding: 0 20px;
+}
+.insight-quote::before { content: '\201C'; }
+.insight-quote::after  { content: '\201D'; }
+
+/* ── CONTACT ───────────────────────────────────── */
+.contact-section { background: var(--ink); color: var(--white); text-align: center; }
+.contact-section h2 { color: var(--white); }
+.contact-section .lead { color: rgba(255,255,255,0.6); margin-inline: auto; }
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.contact-btn.primary {
+  background: var(--accent);
+  color: var(--white);
+  border: 1px solid var(--accent);
+}
+.contact-btn.outline {
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.contact-btn:hover { transform: translateY(-2px); text-decoration: none; }
+.contact-btn.primary:hover { background: #92400e; }
+.contact-btn.outline:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+/* ── FOOTER ────────────────────────────────────── */
+.footer {
+  background: #070d18;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  padding: 24px;
+  font-size: 0.82rem;
+}
+
+/* ── TABLE SCROLL ──────────────────────────────── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── RESPONSIVE ────────────────────────────────── */
+@media (max-width: 768px) {
+  section { padding-block: 52px; }
+
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--white);
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1rem; }
+
+  .summary-grid,
+  .tools-role-grid { grid-template-columns: 1fr; }
+
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat { border-right: none; border-bottom: 1px solid var(--line); }
+  .stat:last-child { border-bottom: none; }
+
+  .context-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding-block: 60px; }
+  .contact-links { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────── -->
+<nav class="navbar" aria-label="Site navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-brand">Digital Insights Hub</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleNav(this)">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#context">Context</a></li>
+      <li><a href="#challenges">Challenges</a></li>
+      <li><a href="#interventions">Interventions</a></li>
+      <li><a href="#outcomes">Outcomes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────── -->
+<header class="hero" role="banner">
+  <div class="container hero-inner">
+    <span class="label">Case Study · Enterprise Implementation</span>
+    <h1>Project Nexus</h1>
+    <p class="lead">Implementing and stabilising an enterprise procurement system across a large multi-site organisation — resolving integration failures, aligning stakeholders, and enabling phased business adoption.</p>
+    <div class="hero-chips">
+      <span>Continuous Improvement</span>
+      <span>Project Management</span>
+      <span>ERP Implementation</span>
+      <span>Procurement Operations</span>
+      <span>Stakeholder Management</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── STATS BAR ──────────────────────────────── -->
+<div class="stats-bar" aria-label="Key outcomes">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Critical Defects Resolved</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">Multi</span>
+        <span class="stat-label">Entity Rollout Stabilised</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">↑</span>
+        <span class="stat-label">User Adoption Trajectory</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXECUTIVE SUMMARY ──────────────────────── -->
+<section id="summary" aria-labelledby="summary-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="summary-heading">Executive Summary</span>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-text">
+        <h2>Stabilising a failing implementation before it became a crisis</h2>
+        <p>Project Nexus was commissioned to implement an enterprise procurement system — integrating a purchase order (PO) platform with the organisation's existing ERP — across multiple business units with differing approval structures and financial processes. What began as a planned rollout quickly encountered significant delivery challenges: integration failures between systems, incorrect approval routing, supplier onboarding delays, and high operational disruption.</p>
+        <p>The engagement shifted from a straightforward implementation to an active stabilisation. The priority became resolving critical defects, restoring stakeholder confidence, and establishing a controlled, phased adoption pathway that reduced risk and gave operational teams the time to adapt.</p>
+        <p>Success here was not measured in features delivered, but in systems stabilised, processes defined, and people equipped to work effectively in the new environment.</p>
+        <p class="credibility-note">Delivered across multiple business units with cross-functional involvement spanning procurement, IT, operations, and third-party suppliers.</p>
+        <p style="font-size:0.8rem; color:var(--muted); margin-top:8px;">Organisation name and system vendors have been anonymised to protect organisational confidentiality while preserving key delivery insights.</p>
+      </div>
+      <div class="summary-outcomes" aria-label="Key outcomes">
+        <h3>Key Outcomes</h3>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">🔧</div>
+          <div>
+            <div class="outcome-title">Critical Defects Resolved</div>
+            <div class="outcome-desc">Approval routing failures, access issues, and financial data alignment errors identified and remediated.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">📋</div>
+          <div>
+            <div class="outcome-title">Controlled Rollout Established</div>
+            <div class="outcome-desc">Shifted from high-risk full deployment to a structured phased approach, reducing operational disruption.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">🤝</div>
+          <div>
+            <div class="outcome-title">Stakeholder Alignment Restored</div>
+            <div class="outcome-desc">Re-established governance across procurement, IT, operations, and suppliers with clear accountability.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">📈</div>
+          <div>
+            <div class="outcome-title">Adoption Trajectory Improved</div>
+            <div class="outcome-desc">Drop-in sessions and job aids replaced failing formal training — engagement rates improved steadily.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTEXT ────────────────────────────────── -->
+<section id="context" class="context-section" aria-labelledby="context-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="context-heading">Context</span>
+    </div>
+    <h2>The organisation & the environment</h2>
+    <p class="lead" style="margin-bottom: 2rem;">A large multi-site organisation transitioning from manual procurement processes to a fully digital PO workflow — a high-stakes change with significant financial and operational risk.</p>
+    <div class="context-grid">
+      <div class="context-card">
+        <h3>The System</h3>
+        <p>A specialist PO platform integrated with the organisation's existing ERP. Two complex enterprise systems required to work in sync across business units.</p>
+      </div>
+      <div class="context-card">
+        <h3>The Environment</h3>
+        <p>Multiple business units with different approval hierarchies, chart of accounts structures, and varying levels of digital readiness.</p>
+      </div>
+      <div class="context-card">
+        <h3>The Risk</h3>
+        <p>High financial exposure if transactions were routed incorrectly or rejected — incorrect financial data handling could cause material reporting errors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHALLENGES ─────────────────────────────── -->
+<section id="challenges" class="challenge-section" aria-labelledby="challenges-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="challenges-heading">Core Challenges</span>
+    </div>
+    <h2>What was blocking progress</h2>
+    <p class="lead" style="margin-bottom: 0;">Five interconnected failure modes emerged during the initial rollout phase, each requiring a distinct resolution approach.</p>
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🔀</div>
+        <h4>Approval Routing Failures</h4>
+        <p>Transactions were routing to incorrect approvers due to misconfigured approval hierarchies in the platform, creating bottlenecks and compliance risk.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🔗</div>
+        <h4>Financial Data Alignment Issues</h4>
+        <p>Integration between the platform and the ERP was producing misaligned financial data, risking reporting integrity across business units.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🚚</div>
+        <h4>Supplier Onboarding Delays</h4>
+        <p>Key suppliers were not onboarded to the portal in time, forcing manual workarounds and undermining the business case for digitisation.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🔐</div>
+        <h4>User Access & Authentication Issues</h4>
+        <p>System access configuration failures prevented a significant proportion of users from logging in during go-live, impacting adoption and trust in the platform.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">😕</div>
+        <h4>User Confusion & Resistance</h4>
+        <p>Insufficient change management ahead of go-live left users without confidence in the new system, driving workarounds and shadow processes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPLEXITY LANDSCAPE ───────────────────── -->
+<section aria-labelledby="complexity-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="complexity-heading">Complexity Landscape</span>
+    </div>
+    <h2>Where the risk was concentrated</h2>
+    <div class="table-scroll">
+      <table class="complexity-table" aria-label="Complexity landscape by area">
+        <thead>
+          <tr>
+            <th scope="col">Area</th>
+            <th scope="col">Challenge</th>
+            <th scope="col">Detail</th>
+            <th scope="col">Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Technology</strong></td>
+            <td>PO platform + ERP integration</td>
+            <td>Data field mapping mismatches between systems causing downstream coding errors</td>
+            <td><span class="impact-pill impact-high">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Procurement</strong></td>
+            <td>Financial data structures across entities</td>
+            <td>Different data schemas across entities not reconciled before go-live</td>
+            <td><span class="impact-pill impact-high">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Operations</strong></td>
+            <td>Manual vs digital process transition</td>
+            <td>Staff accustomed to paper-based PO workflows resisted change without adequate support</td>
+            <td><span class="impact-pill impact-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Suppliers</strong></td>
+            <td>Portal onboarding readiness</td>
+            <td>Supplier adoption required active coordination that wasn't scoped into the original plan</td>
+            <td><span class="impact-pill impact-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Stakeholders</strong></td>
+            <td>Multi-function alignment</td>
+            <td>Procurement, IT, Operations, and suppliers had conflicting priorities with no shared governance forum</td>
+            <td><span class="impact-pill impact-high">High</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── DELIVERY APPROACH ──────────────────────── -->
+<section aria-labelledby="delivery-heading" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="delivery-heading">Delivery Approach</span>
+    </div>
+    <h2>Shifting from rollout to stabilisation</h2>
+    <p class="lead" style="margin-bottom: 2rem;">Recognising that a full go-live was not viable in the current state, the delivery approach was redesigned to prioritise stability over speed.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;">
+      <div style="background: var(--white); border: 1px solid var(--line); border-radius: var(--rad); padding: 22px;">
+        <div style="font-size:1.4rem; margin-bottom: 10px;">🔄</div>
+        <strong style="font-size:0.9rem;">Controlled Pilot</strong>
+        <p style="font-size:0.85rem; color:var(--muted); margin-top:6px;">Moved from full entity rollout to a controlled pilot, limiting exposure while issues were resolved.</p>
+      </div>
+      <div style="background: var(--white); border: 1px solid var(--line); border-radius: var(--rad); padding: 22px;">
+        <div style="font-size:1.4rem; margin-bottom: 10px;">🐛</div>
+        <strong style="font-size:0.9rem;">Structured Issue Tracking</strong>
+        <p style="font-size:0.85rem; color:var(--muted); margin-top:6px;">Introduced a centralised issue tracking tool, replacing ad-hoc email chains and spreadsheets with a structured log visible to all teams.</p>
+      </div>
+      <div style="background: var(--white); border: 1px solid var(--line); border-radius: var(--rad); padding: 22px;">
+        <div style="font-size:1.4rem; margin-bottom: 10px;">🎯</div>
+        <strong style="font-size:0.9rem;">Defect Triage</strong>
+        <p style="font-size:0.85rem; color:var(--muted); margin-top:6px;">Implemented a severity-based triage process to prioritise critical defects blocking adoption over cosmetic issues.</p>
+      </div>
+      <div style="background: var(--white); border: 1px solid var(--line); border-radius: var(--rad); padding: 22px;">
+        <div style="font-size:1.4rem; margin-bottom: 10px;">🏛️</div>
+        <strong style="font-size:0.9rem;">Governance Reset</strong>
+        <p style="font-size:0.85rem; color:var(--muted); margin-top:6px;">Re-established a cross-functional steering forum with clear decision rights and escalation paths.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── KEY INTERVENTIONS ──────────────────────── -->
+<section id="interventions" aria-labelledby="interventions-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="interventions-heading">Key Interventions</span>
+    </div>
+    <h2>What made the difference</h2>
+    <div class="intervention-grid">
+      <div class="intervention-card">
+        <div class="intervention-number">01</div>
+        <h4>Centralised Issue Control</h4>
+        <p>All defects, blockers, and open questions consolidated into a single centralised tracking system with owners, priorities, and resolution targets assigned.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Eliminated duplication, created shared visibility across teams, and enabled weekly resolution reporting to senior stakeholders.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">02</div>
+        <h4>Stakeholder Realignment</h4>
+        <p>Re-established governance across procurement, IT, operations, and external suppliers. Clarified roles, decision rights, and escalation paths that had become blurred during go-live.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Reduced escalation noise, accelerated supplier responses, and restored confidence among operational leads.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">03</div>
+        <h4>Guided Adoption Programme</h4>
+        <p>Replaced failed formal training with a flexible drop-in session model and concise job aids — step-by-step visual guides tailored to each user group's workflow.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Engagement rates improved week-on-week. Users reported greater confidence and fewer workarounds within four weeks.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">04</div>
+        <h4>SOP & Process Definition</h4>
+        <p>Documented standard operating procedures for key PO workflows — raising, approving, and querying — ensuring consistency across entities and reducing user error rates.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Provided a reference baseline for onboarding new users and auditing process adherence post-rollout.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OUTCOMES ────────────────────────────────── -->
+<section id="outcomes" class="outcomes-section" aria-labelledby="outcomes-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="outcomes-heading">Outcomes</span>
+    </div>
+    <h2>State before and after intervention</h2>
+    <div class="table-scroll">
+      <table class="outcomes-table" aria-label="Outcomes before and after">
+        <thead>
+          <tr>
+            <th scope="col">Metric</th>
+            <th scope="col">Before</th>
+            <th scope="col">After</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>System Stability</strong></td>
+            <td>Critical defects blocking adoption; approval routing and access failures active</td>
+            <td>Core defects resolved; controlled pilot running without critical failures</td>
+            <td><span class="badge badge-green">Stabilised</span></td>
+          </tr>
+          <tr>
+            <td><strong>Approval Workflow</strong></td>
+            <td>Transactions routing to incorrect approvers across multiple business units</td>
+            <td>Corrected hierarchy configured and validated across business units</td>
+            <td><span class="badge badge-green">Resolved</span></td>
+          </tr>
+          <tr>
+            <td><strong>Issue Visibility</strong></td>
+            <td>Fragmented across emails, calls, and spreadsheets — no single source of truth</td>
+            <td>Centralised in a shared tracking system with owners, priorities, and weekly reporting in place</td>
+            <td><span class="badge badge-green">Centralised</span></td>
+          </tr>
+          <tr>
+            <td><strong>User Adoption</strong></td>
+            <td>Low — users bypassing system due to access failures and lack of confidence</td>
+            <td>Improving — drop-in sessions driving steady engagement growth week-on-week</td>
+            <td><span class="badge badge-amber">Improving</span></td>
+          </tr>
+          <tr>
+            <td><strong>Stakeholder Alignment</strong></td>
+            <td>Conflicting priorities; no shared governance or escalation path</td>
+            <td>Cross-functional steering forum re-established with clear accountability</td>
+            <td><span class="badge badge-green">Restored</span></td>
+          </tr>
+          <tr>
+            <td><strong>Supplier Onboarding</strong></td>
+            <td>Delayed — key suppliers not ready at go-live</td>
+            <td>Active coordination programme in place; phased onboarding underway</td>
+            <td><span class="badge badge-amber">In Progress</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOOLS & ROLE ────────────────────────────── -->
+<section aria-labelledby="tools-heading" style="background: var(--white);">
+  <div class="container">
+    <div class="tools-role-grid">
+      <div>
+        <div class="section-heading">
+          <span class="label" id="tools-heading">Tools &amp; Methods</span>
+        </div>
+        <h2>How the work was done</h2>
+        <div class="tag-cloud">
+          <span class="tag">Issue Tracking</span>
+          <span class="tag">PO Platform</span>
+          <span class="tag">ERP Integration</span>
+          <span class="tag">RAID Log</span>
+          <span class="tag">Root Cause Analysis</span>
+          <span class="tag">Stakeholder Mapping</span>
+          <span class="tag">Change Management</span>
+          <span class="tag">SOP Documentation</span>
+          <span class="tag">Defect Triage</span>
+          <span class="tag">Agile Delivery</span>
+          <span class="tag">Governance Design</span>
+          <span class="tag">Process Observation</span>
+        </div>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="label">My Role</span>
+        </div>
+        <h2>Contributions to the project</h2>
+        <ul class="role-list">
+          <li>Led issue resolution coordination across IT, procurement, operations, and supplier teams</li>
+          <li>Managed project delivery — scope control, risk log, RAID, and stakeholder status reporting</li>
+          <li>Re-established governance structures and cross-functional steering forum</li>
+          <li>Designed and implemented the defect triage and prioritisation framework</li>
+          <li>Authored SOPs and job aids covering key PO workflows for each user group</li>
+          <li>Redesigned the adoption approach — shifting from formal training to drop-in sessions</li>
+          <li>Applied continuous improvement methods to identify and remove systemic blockers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── KEY INSIGHT ────────────────────────────── -->
+<section class="insight-section" aria-labelledby="insight-heading">
+  <div class="container" style="text-align:center;">
+    <div class="section-heading" style="justify-content:center;">
+      <span class="label" id="insight-heading">Key Insight</span>
+    </div>
+    <h2>What this project taught</h2>
+    <p class="insight-quote">Successful delivery was not achieved through system implementation alone — but through stabilising people, process, and governance alongside technology.</p>
+    <p style="color:rgba(255,255,255,0.5); font-size:0.88rem; margin-top:1.5rem; max-width:55ch; margin-inline:auto;">The technical fix was only part of the solution. The lasting improvement came from restoring trust, clarity, and structure around the change.</p>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────── -->
+<section id="contact" class="contact-section" aria-labelledby="contact-heading">
+  <div class="container">
+    <span class="label" id="contact-heading">Get In Touch</span>
+    <h2 style="margin-top: 0.5rem;">Interested in working together?</h2>
+    <p class="lead">I'm a Continuous Improvement Analyst and Project Manager specialising in operational transformation and digital change. If you'd like to discuss a project or just connect, I'd love to hear from you.</p>
+    <div class="contact-links">
+      <a href="mailto:hello@example.com" class="contact-btn primary">✉️ Email me</a>
+      <!-- Update these with your real LinkedIn and GitHub URLs -->
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener" class="contact-btn outline">🔗 LinkedIn</a>
+      <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="contact-btn outline">💻 GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────── -->
+<footer class="footer">
+  <p>© 2025 Digital Insights Hub · Built for GitHub Pages</p>
+</footer>
+
+<!-- ── JS: mobile nav toggle ──────────────────── -->
+<script>
+  function toggleNav(btn) {
+    const nav = document.getElementById('nav-links');
+    const isOpen = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+  }
+  document.querySelectorAll('#nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('nav-links').classList.remove('open');
+      document.querySelector('.nav-toggle').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
