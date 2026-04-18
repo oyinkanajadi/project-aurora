@@ -34,6 +34,38 @@
   --transition: 0.25s ease;
 }
 
+/* ── PROJECT CARD ── */
+.project-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 22px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.project-card.current {
+  background: var(--accent-pale);
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+  
+.project-card h3 {
+  color: var(--ink);
+  transition: color 0.25s ease;
+}
+
+.project-card:hover h3 {
+  color: var(--accent);
+}
+  
 /* ── RESET & BASE ──────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -47,9 +79,19 @@ body {
 }
 
 img { display: block; max-width: 100%; border-radius: var(--rad); }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
+.project-card-link {
+  display: block;
+}
+
+a:hover {
+  text-decoration: none;
+}
+  
 /* ── LAYOUT ────────────────────────────────────── */
 .container {
   width: min(90%, 1080px);
@@ -972,6 +1014,49 @@ p { color: var(--ink); }
   </div>
 </section>
 
+  <!-- ── RELATED PROJECTS ───────────────────────── -->
+<section style="background: var(--surface);">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label">Explore More Work</span>
+    </div>
+    <h2>Other Case Studies</h2>
+    <p class="lead" style="margin-bottom: 2rem;">
+      A selection of transformation work across systems, data, and operational delivery.
+    </p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px;">
+
+      <!-- Aurora -->
+<a href="aurora.html" class="project-card-link" aria-label="View Project Aurora case study">
+  <div class="project-card">
+          <h3>Project Aurora</h3>
+          <p>
+            Service and user journey transformation — redesigning processes to improve access, flow, and experience.
+          </p>
+        </div>
+      </a>
+
+      <!-- Nexus -->
+<a href="nexus.html" class="project-card-link" aria-label="View Project Nexus case study">
+  <div class="project-card">
+          <h3>Project Nexus</h3>
+          <p>
+            Enterprise procurement system implementation and stabilisation across multiple business units.
+          </p>
+        </div>
+      </a>
+
+      <!-- Atlas (current page) -->
+      <div class="project-card current">
+        <h3>Project Atlas (Current)</h3>
+        <p>You are currently viewing this case study.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+  
 <!-- ── CONTACT ────────────────────────────────── -->
 <section id="contact" class="contact-section" aria-labelledby="contact-heading">
   <div class="container">
