@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Project Atlas – a data and insight transformation case study. Structured fragmented operational data into decision-ready reporting, introducing a unified KPI framework and shifting the organisation from reactive to proactive performance management.">
+<meta property="og:title" content="Project Atlas – Data & Insight Transformation | Digital Insights Hub">
+<meta property="og:description" content="Transforming fragmented data into decision-ready insight – a CI & PM case study by Digital Insights Hub.">
+<meta property="og:type" content="website">
+<title>Project Atlas – Data & Insight Transformation | Digital Insights Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🟢</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────── */
+:root {
+  /* Atlas accent: deep teal — distinct from Aurora blue & Nexus amber */
+  --accent:      #0f766e;
+  --accent-mid:  #0d9488;
+  --accent-pale: #ccfbf1;
+  --dark:        #0f172a;
+  --ink:         #1e293b;
+  --muted:       #64748b;
+  --line:        #e2e8f0;
+  --surface:     #f8fafc;
+  --white:       #ffffff;
+
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+
+  --rad: 10px;
+  --transition: 0.25s ease;
+}
+
+/* ── RESET & BASE ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--white);
+}
+
+img { display: block; max-width: 100%; border-radius: var(--rad); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── LAYOUT ────────────────────────────────────── */
+.container {
+  width: min(90%, 1080px);
+  margin-inline: auto;
+}
+section { padding-block: 72px; }
+
+/* ── TYPOGRAPHY ────────────────────────────────── */
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+p { color: var(--ink); }
+
+.label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.lead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* ── NAVBAR ────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 14px;
+}
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--dark);
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--accent); text-decoration: none; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+
+/* ── HERO ──────────────────────────────────────── */
+.hero {
+  background:
+    linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(10,60,55,0.85) 55%, rgba(13,148,136,0.75) 100%),
+    url('atlas-hero.jpg') center/cover no-repeat;
+  background-color: #0a2824;
+  color: var(--white);
+  padding-block: clamp(80px, 14vw, 140px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dot-grid texture */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.hero-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 700px;
+}
+.hero .label { color: #99f6e4; }
+.hero h1 { color: var(--white); }
+.hero .lead { color: rgba(255,255,255,0.72); max-width: 52ch; }
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.hero-chips span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  padding: 5px 14px;
+  border-radius: 50px;
+}
+
+/* ── STATS BAR ─────────────────────────────────── */
+.stats-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.stat {
+  text-align: center;
+  padding: 28px 16px;
+  border-right: 1px solid var(--line);
+}
+.stat:last-child { border-right: none; }
+.stat-number {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── SECTION HEADINGS ──────────────────────────── */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 2rem;
+}
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── EXEC SUMMARY ──────────────────────────────── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.summary-text p { margin-bottom: 1rem; color: var(--muted); }
+.credibility-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-left: 3px solid var(--line);
+  border-radius: 4px;
+}
+
+.summary-outcomes {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 28px;
+}
+.outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.outcome-item:last-child { border-bottom: none; }
+.outcome-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--accent-pale);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.outcome-title { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+.outcome-desc  { font-size: 0.82rem; color: var(--muted); }
+
+/* ── CONTEXT CARDS ─────────────────────────────── */
+.context-section { background: var(--surface); }
+.context-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.context-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 24px;
+}
+.context-card h3 { font-size: 0.75rem; }
+.context-card p  { font-size: 0.95rem; margin-top: 6px; }
+
+/* ── CHALLENGES DARK ───────────────────────────── */
+.challenge-section {
+  background: linear-gradient(135deg, #0a2824 0%, #0f2d28 60%, #0f172a 100%);
+  color: var(--white);
+}
+.challenge-section h2 { color: var(--white); }
+.challenge-section .label { color: #99f6e4; }
+.challenge-section .lead { color: rgba(255,255,255,0.6); }
+
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 2rem;
+}
+.challenge-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--rad);
+  padding: 22px;
+}
+.challenge-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.challenge-card h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.challenge-card p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+/* ── BEFORE / AFTER ────────────────────────────── */
+.before-after-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.before-box, .after-box {
+  border-radius: var(--rad);
+  padding: 28px;
+}
+.before-box {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+}
+.after-box {
+  background: #f0fdf9;
+  border: 1px solid #99f6e4;
+}
+.before-box h3 { color: #92400e; }
+.after-box  h3 { color: var(--accent); }
+
+.state-list { list-style: none; padding: 0; margin-top: 12px; }
+.state-list li {
+  font-size: 0.9rem;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.08);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.state-list li:last-child { border-bottom: none; }
+.before-box .state-list li::before { content: '✕'; color: #f97316; font-size: 0.75rem; margin-top: 3px; flex-shrink: 0; }
+.after-box  .state-list li::before { content: '✓'; color: var(--accent); font-size: 0.75rem; margin-top: 3px; flex-shrink: 0; }
+
+/* ── INTERVENTIONS ─────────────────────────────── */
+.intervention-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.intervention-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+}
+.intervention-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-mid);
+}
+.intervention-number {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--accent-pale);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.intervention-card h4 {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.intervention-card p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.intervention-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.intervention-detail strong { color: var(--ink); }
+
+/* ── OUTCOMES TABLE ────────────────────────────── */
+.outcomes-section { background: var(--surface); }
+
+.outcomes-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--rad);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.outcomes-table thead th {
+  background: var(--accent);
+  color: var(--white);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.outcomes-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.outcomes-table tbody tr:last-child td { border-bottom: none; }
+.outcomes-table tbody tr:hover { background: #f0fdf9; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-green  { background: #d1fae5; color: #065f46; }
+.badge-amber  { background: #fef3c7; color: #92400e; }
+.badge-teal   { background: var(--accent-pale); color: var(--accent); }
+
+/* ── TOOLS & ROLE ──────────────────────────────── */
+.tools-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+.tag {
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--accent-pale);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 50px;
+}
+
+.role-list { list-style: none; padding: 0; margin-top: 1rem; }
+.role-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.role-list li::before {
+  content: '▸';
+  color: var(--accent);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* ── KEY INSIGHT ───────────────────────────────── */
+.insight-section {
+  background: linear-gradient(135deg, #0a2824 0%, #0f172a 100%);
+  color: var(--white);
+  text-align: center;
+}
+.insight-section h2 { color: var(--white); }
+.insight-quote {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-style: italic;
+  color: rgba(255,255,255,0.85);
+  max-width: 680px;
+  margin-inline: auto;
+  margin-top: 1.5rem;
+  line-height: 1.5;
+  padding: 0 20px;
+}
+.insight-quote::before { content: '\201C'; }
+.insight-quote::after  { content: '\201D'; }
+
+/* ── CONTACT ───────────────────────────────────── */
+.contact-section { background: var(--ink); color: var(--white); text-align: center; }
+.contact-section h2 { color: var(--white); }
+.contact-section .lead { color: rgba(255,255,255,0.6); margin-inline: auto; }
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.contact-btn.primary {
+  background: var(--accent);
+  color: var(--white);
+  border: 1px solid var(--accent);
+}
+.contact-btn.outline {
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.contact-btn:hover { transform: translateY(-2px); text-decoration: none; }
+.contact-btn.primary:hover { background: #0f766e; }
+.contact-btn.outline:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+/* ── FOOTER ────────────────────────────────────── */
+.footer {
+  background: #070d18;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  padding: 24px;
+  font-size: 0.82rem;
+}
+
+/* ── TABLE SCROLL ──────────────────────────────── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── RESPONSIVE ────────────────────────────────── */
+@media (max-width: 768px) {
+  section { padding-block: 52px; }
+
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--white);
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1rem; }
+
+  .summary-grid,
+  .before-after-grid,
+  .tools-role-grid { grid-template-columns: 1fr; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3) { border-top: 1px solid var(--line); }
+
+  .context-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding-block: 60px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat { border-right: none; border-bottom: 1px solid var(--line); }
+  .stat:last-child { border-bottom: none; }
+  .contact-links { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────── -->
+<nav class="navbar" aria-label="Site navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-brand">Digital Insights Hub</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleNav(this)">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#context">Context</a></li>
+      <li><a href="#challenges">Challenges</a></li>
+      <li><a href="#interventions">Interventions</a></li>
+      <li><a href="#outcomes">Outcomes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────── -->
+<header class="hero" role="banner">
+  <div class="container hero-inner">
+    <span class="label">Case Study · Data & Insight Transformation</span>
+    <h1>Project Atlas</h1>
+    <p class="lead">Transforming fragmented operational data into structured, decision-ready insight — unifying KPI definitions, establishing a single source of truth, and shifting a multi-functional organisation from reactive reporting to proactive performance management.</p>
+    <div class="hero-chips">
+      <span>Continuous Improvement</span>
+      <span>Data & Reporting</span>
+      <span>KPI Frameworks</span>
+      <span>Performance Management</span>
+      <span>Stakeholder Engagement</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── STATS BAR ──────────────────────────────── -->
+<div class="stats-bar" aria-label="Key outcomes">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <span class="stat-number">1</span>
+        <span class="stat-label">Unified Source of Truth</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">↓</span>
+        <span class="stat-label">Manual Reporting Effort</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">↑</span>
+        <span class="stat-label">Leadership Visibility</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">⇄</span>
+        <span class="stat-label">Reactive → Proactive</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXECUTIVE SUMMARY ──────────────────────── -->
+<section id="summary" aria-labelledby="summary-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="summary-heading">Executive Summary</span>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-text">
+        <h2>From fragmented data to a foundation for better decisions</h2>
+        <p>Project Atlas was initiated in response to a growing gap between the volume of data available to the organisation and its ability to use that data meaningfully. Operational teams were producing reports manually, pulling from disconnected systems, and applying inconsistent definitions to the same metrics — resulting in conflicting figures, eroded trust in reporting, and leadership teams making decisions without a reliable performance baseline.</p>
+        <p>The work went beyond simply improving dashboards. It involved redesigning how data was defined, owned, structured, and used across functions. A standardised KPI framework was introduced, a single source of truth principle was established, and a reporting cadence was put in place to shift the organisation's relationship with performance data from reactive and ad hoc to structured and forward-looking.</p>
+        <p>The result was a measurable improvement in decision-making confidence, a significant reduction in manual reporting effort, and a shared language around performance that had previously been absent.</p>
+        <p class="credibility-note">Delivered across a multi-functional organisation with cross-functional involvement spanning operations, finance, and senior leadership.</p>
+        <p style="font-size:0.8rem; color:var(--muted); margin-top:8px;">Organisation name and any proprietary system details have been anonymised to protect organisational confidentiality while preserving key delivery insights.</p>
+      </div>
+      <div class="summary-outcomes" aria-label="Key outcomes">
+        <h3>Key Outcomes</h3>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">📊</div>
+          <div>
+            <div class="outcome-title">Unified KPI Framework</div>
+            <div class="outcome-desc">Standardised metric definitions adopted across teams, eliminating conflicting figures in leadership reporting.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">🗄️</div>
+          <div>
+            <div class="outcome-title">Single Source of Truth</div>
+            <div class="outcome-desc">Consolidated reporting built on agreed data sources, replacing fragmented manual extracts across teams.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">⏱️</div>
+          <div>
+            <div class="outcome-title">Reduced Manual Effort</div>
+            <div class="outcome-desc">Automated and structured reporting reduced the time teams spent on data compilation and reconciliation.</div>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-icon" aria-hidden="true">🎯</div>
+          <div>
+            <div class="outcome-title">Proactive Performance Management</div>
+            <div class="outcome-desc">Leadership moved from receiving retrospective reports to engaging with forward-looking performance data in real time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTEXT ────────────────────────────────── -->
+<section id="context" class="context-section" aria-labelledby="context-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="context-heading">Context</span>
+    </div>
+    <h2>The organisation & the data landscape</h2>
+    <p class="lead" style="margin-bottom: 2rem;">A multi-functional organisation with data spread across multiple disconnected systems — each team maintaining its own version of performance metrics with no shared governance or agreed definitions.</p>
+    <div class="context-grid">
+      <div class="context-card">
+        <h3>The Environment</h3>
+        <p>Multiple operational functions each managing their own reporting in isolation, using different tools, data extracts, and KPI definitions for the same metrics.</p>
+      </div>
+      <div class="context-card">
+        <h3>The Problem</h3>
+        <p>No single source of truth, heavy reliance on manual processes, and a lack of agreed metric definitions meant leadership could not trust or act confidently on performance data.</p>
+      </div>
+      <div class="context-card">
+        <h3>The Risk</h3>
+        <p>Delayed and poorly informed decisions, eroded stakeholder trust in reporting, and an inability to identify performance trends before they became operational problems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHALLENGES ─────────────────────────────── -->
+<section id="challenges" class="challenge-section" aria-labelledby="challenges-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="challenges-heading">Core Challenges</span>
+    </div>
+    <h2>What was holding performance back</h2>
+    <p class="lead" style="margin-bottom: 0;">Five interconnected data and reporting problems that compounded each other and required a systemic, not tactical, response.</p>
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🗂️</div>
+        <h4>Fragmented Data Sources</h4>
+        <p>Performance data was spread across multiple systems and manual extracts, with no consistent method for combining or reconciling it.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">⚙️</div>
+        <h4>Manual Reporting Processes</h4>
+        <p>Reports were produced by hand, consuming significant time and introducing errors at every stage of compilation and distribution.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">📏</div>
+        <h4>Inconsistent KPI Definitions</h4>
+        <p>The same metrics were calculated differently across teams, making cross-functional comparisons unreliable and leadership conversations difficult.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🔭</div>
+        <h4>Limited Leadership Visibility</h4>
+        <p>Without a consolidated view, senior leaders were working from incomplete or outdated information, limiting their ability to intervene early on emerging issues.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon" aria-hidden="true">🔁</div>
+        <h4>Reactive Decision-Making</h4>
+        <p>Reporting cadences were slow and retrospective — by the time data reached decision-makers, the window for timely action had often passed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BEFORE / AFTER ─────────────────────────── -->
+<section aria-labelledby="state-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="state-heading">State Change</span>
+    </div>
+    <h2>Where we started vs. where we landed</h2>
+    <p class="lead" style="margin-bottom: 2rem;">The transformation was not just technical — it required changing how people thought about and engaged with performance data across the organisation.</p>
+    <div class="before-after-grid">
+      <div class="before-box">
+        <h3>⚠️ Before</h3>
+        <ul class="state-list">
+          <li>Multiple teams, multiple definitions of the same KPIs</li>
+          <li>Reports built manually in spreadsheets, prone to error</li>
+          <li>Data pulled from different systems with no reconciliation</li>
+          <li>Leadership received reports too late to act on trends</li>
+          <li>No governance over how data was captured or used</li>
+          <li>Low confidence in performance figures across the board</li>
+        </ul>
+      </div>
+      <div class="after-box">
+        <h3>✅ After</h3>
+        <ul class="state-list">
+          <li>Agreed KPI definitions documented and adopted organisation-wide</li>
+          <li>Structured dashboard-based reporting replacing manual compilation</li>
+          <li>Single source of truth established with clear data ownership</li>
+          <li>Regular reporting cadence giving leadership timely visibility</li>
+          <li>Data governance framework with defined rules and responsibilities</li>
+          <li>Increased trust in performance data enabling confident decisions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── KEY INTERVENTIONS ──────────────────────── -->
+<section id="interventions" style="background: var(--surface);" aria-labelledby="interventions-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="interventions-heading">Key Interventions</span>
+    </div>
+    <h2>What drove the transformation</h2>
+    <div class="intervention-grid">
+      <div class="intervention-card">
+        <div class="intervention-number">01</div>
+        <h4>Standardised KPI Framework</h4>
+        <p>Worked with teams across functions to define, agree, and document a consistent set of performance metrics — establishing what each KPI meant, how it was calculated, and who owned it.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Eliminated conflicting figures in leadership reporting and created a shared performance language across the organisation.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">02</div>
+        <h4>Single Source of Truth</h4>
+        <p>Identified and agreed the authoritative data sources for each metric, replacing the proliferation of parallel extracts and manual spreadsheets with a single, governed reporting layer.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Significantly reduced time spent reconciling conflicting data and increased stakeholder confidence in reported figures.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">03</div>
+        <h4>Dashboard-Based Reporting</h4>
+        <p>Designed and introduced a structured dashboard reporting approach to replace manual report production, providing leadership with clear, accessible, and timely performance views.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Reduced manual reporting effort substantially and gave leadership the real-time visibility needed for proactive decision-making.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">04</div>
+        <h4>Data Governance Framework</h4>
+        <p>Established clear governance rules covering data capture, ownership, access, and quality — ensuring the improvements made were sustainable and not reliant on individual effort to maintain.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Created an organisational foundation for ongoing data quality and enabled future reporting improvements to build on solid ground.
+        </div>
+      </div>
+      <div class="intervention-card">
+        <div class="intervention-number">05</div>
+        <h4>Reporting Cadence Design</h4>
+        <p>Introduced a structured performance review cadence — defining when reports were produced, who received them, and how they were used in decision-making forums.</p>
+        <div class="intervention-detail">
+          <strong>Impact:</strong> Shifted the organisation's engagement with data from ad hoc and reactive to scheduled and forward-looking.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OUTCOMES ────────────────────────────────── -->
+<section id="outcomes" class="outcomes-section" aria-labelledby="outcomes-heading">
+  <div class="container">
+    <div class="section-heading">
+      <span class="label" id="outcomes-heading">Outcomes</span>
+    </div>
+    <h2>Measurable changes delivered</h2>
+    <div class="table-scroll">
+      <table class="outcomes-table" aria-label="Outcomes and status">
+        <thead>
+          <tr>
+            <th scope="col">Outcome Area</th>
+            <th scope="col">Before</th>
+            <th scope="col">After</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>KPI Consistency</strong></td>
+            <td>Inconsistent definitions across teams producing conflicting figures</td>
+            <td>Agreed framework adopted organisation-wide with documented ownership</td>
+            <td><span class="badge badge-green">Delivered</span></td>
+          </tr>
+          <tr>
+            <td><strong>Data Source</strong></td>
+            <td>Multiple parallel extracts with no reconciliation process</td>
+            <td>Single source of truth established with clear governance</td>
+            <td><span class="badge badge-green">Delivered</span></td>
+          </tr>
+          <tr>
+            <td><strong>Reporting Effort</strong></td>
+            <td>Heavy manual workload — hours spent compiling and reconciling weekly</td>
+            <td>Structured dashboards replace manual production; effort significantly reduced</td>
+            <td><span class="badge badge-green">Delivered</span></td>
+          </tr>
+          <tr>
+            <td><strong>Leadership Visibility</strong></td>
+            <td>Delayed, retrospective reports with limited actionability</td>
+            <td>Timely performance views enabling proactive intervention</td>
+            <td><span class="badge badge-green">Delivered</span></td>
+          </tr>
+          <tr>
+            <td><strong>Data Trust</strong></td>
+            <td>Low confidence across teams; figures regularly challenged in meetings</td>
+            <td>Increased trust in data; decisions made with greater confidence</td>
+            <td><span class="badge badge-teal">Improving</span></td>
+          </tr>
+          <tr>
+            <td><strong>Data Governance</strong></td>
+            <td>No formal rules for data capture, ownership, or quality</td>
+            <td>Governance framework in place; ownership and accountability defined</td>
+            <td><span class="badge badge-green">Delivered</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOOLS & ROLE ────────────────────────────── -->
+<section aria-labelledby="tools-heading">
+  <div class="container">
+    <div class="tools-role-grid">
+      <div>
+        <div class="section-heading">
+          <span class="label" id="tools-heading">Tools &amp; Methods</span>
+        </div>
+        <h2>How the work was done</h2>
+        <div class="tag-cloud">
+          <span class="tag">KPI Framework Design</span>
+          <span class="tag">Data Mapping</span>
+          <span class="tag">Dashboard Reporting</span>
+          <span class="tag">Data Governance</span>
+          <span class="tag">Stakeholder Workshops</span>
+          <span class="tag">Process Mapping</span>
+          <span class="tag">Root Cause Analysis</span>
+          <span class="tag">Reporting Cadence Design</span>
+          <span class="tag">Change Management</span>
+          <span class="tag">Requirements Gathering</span>
+        </div>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="label">My Role</span>
+        </div>
+        <h2>Contributions to the project</h2>
+        <ul class="role-list">
+          <li>Led stakeholder workshops to surface reporting pain points and agree KPI definitions across functions</li>
+          <li>Designed and documented the standardised KPI framework with clear ownership and calculation rules</li>
+          <li>Mapped existing data sources and identified the authoritative source for each metric</li>
+          <li>Specified reporting requirements and designed the dashboard structure for leadership use</li>
+          <li>Established the data governance framework — rules, ownership, and accountability</li>
+          <li>Designed the performance reporting cadence and integrated it into existing governance forums</li>
+          <li>Applied continuous improvement methodology to identify and eliminate waste in reporting workflows</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── KEY INSIGHT ────────────────────────────── -->
+<section class="insight-section" aria-labelledby="insight-heading">
+  <div class="container" style="text-align:center;">
+    <div class="section-heading" style="justify-content:center;">
+      <span class="label" id="insight-heading">Key Insight</span>
+    </div>
+    <h2>What this project taught</h2>
+    <p class="insight-quote">Better decisions are not driven by more data — but by clearer, trusted, and aligned data.</p>
+    <p style="color:rgba(255,255,255,0.5); font-size:0.88rem; margin-top:1.5rem; max-width:58ch; margin-inline:auto;">The organisations with the best-performing reporting cultures are rarely the ones with the most data. They are the ones that have agreed on what matters, defined it precisely, and made it visible at the right time.</p>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────── -->
+<section id="contact" class="contact-section" aria-labelledby="contact-heading">
+  <div class="container">
+    <span class="label" id="contact-heading">Get In Touch</span>
+    <h2 style="margin-top: 0.5rem;">Interested in working together?</h2>
+    <p class="lead">I'm a Continuous Improvement Analyst and Project Manager specialising in operational transformation and digital change. If you'd like to discuss a project or just connect, I'd love to hear from you.</p>
+    <div class="contact-links">
+      <a href="mailto:hello@example.com" class="contact-btn primary">✉️ Email me</a>
+      <!-- Update these with your real LinkedIn and GitHub URLs -->
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener" class="contact-btn outline">🔗 LinkedIn</a>
+      <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="contact-btn outline">💻 GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────── -->
+<footer class="footer">
+  <p>© 2025 Digital Insights Hub · Built for GitHub Pages</p>
+</footer>
+
+<!-- ── JS: mobile nav toggle ──────────────────── -->
+<script>
+  function toggleNav(btn) {
+    const nav = document.getElementById('nav-links');
+    const isOpen = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+  }
+  document.querySelectorAll('#nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('nav-links').classList.remove('open');
+      document.querySelector('.nav-toggle').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
