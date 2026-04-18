@@ -33,6 +33,16 @@
   --transition: 0.25s ease;
 }
 
+.project-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.project-card { ... }
+.project-card.current { ... }
+  
 /* ── RESET & BASE ──────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1186,19 +1196,37 @@ p { color: var(--ink); }
   </div>
 </section>
 
-<div style="text-align:center; margin-top:40px;">
-  <a href="nexus.html" style="
-    display:inline-block;
-    padding:12px 24px;
-    background:#b45309;
-    color:white;
-    border-radius:6px;
-    text-decoration:none;
-    font-weight:500;
-  ">
-    View Project Nexus →
+<section style="padding-top: 40px;">
+  <div class="container">
+
+<div class="project-nav">
+
+  <!-- Aurora (current) -->
+  <div class="project-card current">
+    <h3>Project Aurora (Current)</h3>
+    <p>You are currently viewing this case study.</p>
+  </div>
+
+  <!-- Nexus -->
+  <a href="nexus.html" class="project-card">
+    <h3>Project Nexus</h3>
+    <p>
+      Service integration and operational flow redesign — connecting systems and improving end-to-end delivery.
+    </p>
   </a>
+
+  <!-- Atlas -->
+  <a href="atlas.html" class="project-card">
+    <h3>Project Atlas</h3>
+    <p>
+      Data and insight transformation — creating a single source of truth and enabling proactive decision-making.
+    </p>
+  </a>
+
 </div>
+
+  </div>
+</section>
   
 <!-- ── FOOTER ──────────────────────────────────── -->
 <footer class="footer">
