@@ -243,30 +243,52 @@ h3 {
   background: var(--white);
   border-bottom: 1px solid var(--line);
 }
+
 .stats-inner {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
+
 .stat-item {
   text-align: center;
   padding: 30px 16px;
-  border-right: 1px solid var(--line);
+  border-right: 1px solid rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
 }
-.stat-item:last-child { border-right: none; }
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+/* Hover interaction (premium feel) */
+.stat-item:hover {
+  background: var(--surface);
+  transform: translateY(-4px);
+}
+
+/* Numbers */
 .stat-num {
   font-family: var(--serif);
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  color: var(--blue);
   line-height: 1;
   display: block;
   margin-bottom: 6px;
 }
+
+/* Colour-coded per project */
+.stat-item:nth-child(1) .stat-num { color: #2563eb; } /* Aurora */
+.stat-item:nth-child(2) .stat-num { color: #d97706; } /* Nexus */
+.stat-item:nth-child(3) .stat-num { color: #0d9488; } /* Atlas */
+.stat-item:nth-child(4) .stat-num { color: #b91c1c; } /* Orion */
+
+/* Labels */
 .stat-desc {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--muted);
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
-
+  
 /* ── SECTION HEADING ───────────────────────────── */
 .section-heading {
   display: flex;
@@ -286,7 +308,7 @@ h3 {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
@@ -316,6 +338,7 @@ h3 {
 .card-aurora::before  { background: #2563eb; }
 .card-nexus::before   { background: #d97706; }
 .card-atlas::before   { background: #0d9488; }
+.card-orion::before   { background: #b91c1c; }   /* Deep Red */
 
 .project-card:hover {
   transform: translateY(-6px);
@@ -337,6 +360,7 @@ h3 {
 .card-aurora .card-tag { background: #dbeafe; color: #1d4ed8; }
 .card-nexus  .card-tag { background: #fef3c7; color: #b45309; }
 .card-atlas  .card-tag { background: #ccfbf1; color: #0f766e; }
+.card-orion  .card-tag { background: #fee2e2; color: #b91c1c; }
 
 .project-card h3 {
   font-family: var(--serif);
@@ -389,6 +413,7 @@ h3 {
 .card-aurora .card-arrow { color: #2563eb; }
 .card-nexus  .card-arrow { color: #d97706; }
 .card-atlas  .card-arrow { color: #0d9488; }
+.card-orion  .card-arrow { color: #b91c1c; }
 .project-card:hover .card-arrow { gap: 10px; }
 
 /* ── ABOUT ─────────────────────────────────────── */
@@ -628,24 +653,29 @@ h3 {
 <!-- ── STATS STRIP ────────────────────────────── -->
 <div class="stats-strip" aria-label="Portfolio highlights">
   <div class="container">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <span class="stat-num">3</span>
-        <span class="stat-desc">Case Studies Published</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">30%</span>
-        <span class="stat-desc">DNA Reduction · Project Aurora</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">40%</span>
-        <span class="stat-desc">Faster Booking · Project Aurora</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">↑</span>
-        <span class="stat-desc">Adoption across all projects</span>
-      </div>
-    </div>
+   <div class="stats-inner">
+
+  <div class="stat-item">
+    <span class="stat-num">4</span>
+    <span class="stat-desc">Transformation Case Studies</span>
+  </div>
+
+  <div class="stat-item">
+    <span class="stat-num">30%</span>
+    <span class="stat-desc">DNA Reduction · Aurora</span>
+  </div>
+
+  <div class="stat-item">
+    <span class="stat-num">40%</span>
+    <span class="stat-desc">Faster Booking · Aurora</span>
+  </div>
+
+  <div class="stat-item">
+    <span class="stat-num">50%</span>
+    <span class="stat-desc">Faster Decisions · Orion</span>
+  </div>
+
+</div>
   </div>
 </div>
 
@@ -723,8 +753,29 @@ h3 {
         <span class="card-arrow">Read case study →</span>
       </a>
 
+<!-- Orion -->
+<a href="orion.html" class="project-card card-orion fade fade-delay-3" aria-label="View Project Orion case study">
+  <div>
+    <span class="card-tag" style="background:#fee2e2;color:#b91c1c;">Governance · Decisi<span class="card-tag">Governance · Decision Framework</span>
+  </div>
+  <h3>Project Orion</h3>
+  <p>Designed and embedded a scalable governance and decision-making framework — introducing RASCI ownership, structured approval routes, and escalation controls to eliminate ambiguity and improve operational accountability.</p>
+  
+  <div class="card-stats">
+    <div class="card-stat-item">
+      <span class="card-stat-value">50%</span>
+      <span class="card-stat-label">Faster Approvals</span>
+    </div>
+    <div class="card-stat-item">
+      <span class="card-stat-value">40%</span>
+      <span class="card-stat-label">Error Reduction</span>  
     </div>
   </div>
+
+   <span class="card-arrow">Read case study →</span>
+</a>
+</div> <!-- END project-grid -->
+    
 </section>
 
 <!-- ── ABOUT ───────────────────────────────────── -->
@@ -813,9 +864,10 @@ h3 {
 <!-- ── FOOTER ──────────────────────────────────── -->
 <footer class="footer">
   <p>© 2025 Digital Insights Hub</p>
-  <a href="index.html">Aurora</a>
+  <a href="aurora.html">Aurora</a>
   <a href="nexus.html">Nexus</a>
   <a href="atlas.html">Atlas</a>
+  <a href="orion.html">Orion</a>
 </footer>
 
 <!-- ── JS ─────────────────────────────────────── -->
